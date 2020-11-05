@@ -38,13 +38,10 @@ public class Question implements java.io.Serializable {
 	@JsonView(Views.User.class)
 	private int questionId;
 
-	@JsonView(Views.User.class)
 	private Category category;
 	
 	@JsonView(Views.User.class)
 	private Questiontype questiontype;
-	
-	private Survey survey;
 	
 	@JsonView(Views.User.class)
 	private Boolean questionAnswerRequired;
@@ -66,18 +63,16 @@ public class Question implements java.io.Serializable {
 	public Question() {
 	}
 
-	public Question(Category category, Questiontype questiontype, Survey survey) {
+	public Question(Category category, Questiontype questiontype) {
 		this.category = category;
 		this.questiontype = questiontype;
-		this.survey = survey;
 	}
 
-	public Question(Category category, Questiontype questiontype, Survey survey, Boolean questionAnswerRequired,
-			String questionName, Integer questionNumber, String questionText, Set<Choice> choices,
+	public Question(Category category, Questiontype questiontype, Boolean questionAnswerRequired, String questionName,
+			Integer questionNumber, String questionText, Set<Choice> choices,
 			Set<ApplicationHasQuestion> applicationHasQuestions) {
 		this.category = category;
 		this.questiontype = questiontype;
-		this.survey = survey;
 		this.questionAnswerRequired = questionAnswerRequired;
 		this.questionName = questionName;
 		this.questionNumber = questionNumber;
@@ -97,9 +92,8 @@ public class Question implements java.io.Serializable {
 		this.questionId = questionId;
 	}
 	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_CategoryID", nullable = true)
+	@JoinColumn(name = "category_CategoryID", nullable = false)
 	public Category getCategory() {
 		return this.category;
 	}
@@ -118,16 +112,7 @@ public class Question implements java.io.Serializable {
 	public void setQuestiontype(Questiontype questiontype) {
 		this.questiontype = questiontype;
 	}
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_SurveyID", nullable = false)
-	public Survey getSurvey() {
-		return this.survey;
-	}
 
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
-	}
 
 	@Column(name = "QuestionAnswerRequired")
 	public Boolean getQuestionAnswerRequired() {

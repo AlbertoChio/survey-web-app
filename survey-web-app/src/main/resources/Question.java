@@ -1,5 +1,5 @@
 // default package
-// Generated 19 oct 2020 21:12:21 by Hibernate Tools 5.1.10.Final
+// Generated 21 oct 2020 17:29:49 by Hibernate Tools 5.1.10.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +24,6 @@ public class Question implements java.io.Serializable {
 	private Integer questionId;
 	private Category category;
 	private Questiontype questiontype;
-	private Survey survey;
 	private Boolean questionAnswerRequired;
 	private String questionName;
 	private Integer questionNumber;
@@ -35,18 +34,16 @@ public class Question implements java.io.Serializable {
 	public Question() {
 	}
 
-	public Question(Category category, Questiontype questiontype, Survey survey) {
+	public Question(Category category, Questiontype questiontype) {
 		this.category = category;
 		this.questiontype = questiontype;
-		this.survey = survey;
 	}
 
-	public Question(Category category, Questiontype questiontype, Survey survey, Boolean questionAnswerRequired,
-			String questionName, Integer questionNumber, String questionText, Set<Choice> choices,
+	public Question(Category category, Questiontype questiontype, Boolean questionAnswerRequired, String questionName,
+			Integer questionNumber, String questionText, Set<Choice> choices,
 			Set<ApplicationHasQuestion> applicationHasQuestions) {
 		this.category = category;
 		this.questiontype = questiontype;
-		this.survey = survey;
 		this.questionAnswerRequired = questionAnswerRequired;
 		this.questionName = questionName;
 		this.questionNumber = questionNumber;
@@ -85,16 +82,6 @@ public class Question implements java.io.Serializable {
 
 	public void setQuestiontype(Questiontype questiontype) {
 		this.questiontype = questiontype;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_SurveyID", nullable = false)
-	public Survey getSurvey() {
-		return this.survey;
-	}
-
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
 	}
 
 	@Column(name = "QuestionAnswerRequired")

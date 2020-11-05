@@ -105,10 +105,46 @@ public class SurveyParticipantRestController {
     public ResponseEntity<?> saveapplication(@PathVariable("surveyname") String surveyname, @RequestBody Application application,Authentication authentication){
     	Surveyparticipant surveyparticipant = surveyParticipantService.findByUsuarioUsernameAndSurveySurveyName(authentication.getName(), surveyname);
     	application.setSurveyparticipant(surveyparticipant);
-    		applicationService.save(application);
-        return new ResponseEntity<Object>(new Mensaje("Applicacion guardada"), HttpStatus.OK);   
+
+   	 Set<ApplicationHasQuestion> applicationHasQuestionsHolder = new HashSet<ApplicationHasQuestion>(0);
+   	 applicationHasQuestionsHolder=application.getApplicationHasQuestions();
+   	 
+   	 application.setApplicationHasQuestions(null);
+   	 
+   	 int applicationidHolder=(applicationService.save(application).getIdapplication());
+   	
+   	 applicationHasQuestionsHolder = (Set<ApplicationHasQuestion>) applicationHasQuestionsHolder.stream().map(temp -> {
+   		 ApplicationHasQuestionId applicationHasQuestionId=new ApplicationHasQuestionId();
+   		 applicationHasQuestionId.setApplicationIdapplication(applicationidHolder);
+   		 applicationHasQuestionId.setQuestionQuestionId(temp.getId().getQuestionQuestionId());
+   		 temp.setId(applicationHasQuestionId);
+     return temp;
+       }).collect(Collectors.toSet()); 
+   	 
+   	 application.setIdapplication(applicationidHolder);
+   	 application.setApplicationHasQuestions(applicationHasQuestionsHolder);
+   	/*
+   	 *
+   	 * ApplicationHasQuestionId applicationHasQuestionId= new ApplicationHasQuestionId();
+   	application.setApplicationHasQuestions(new HashSet<ApplicationHasQuestion>(0));
+   	applicationHasQuestionId.setApplicationIdapplication((applicationService.save(application).getIdapplication()));
+   	 applicationHasQuestions = (Set<ApplicationHasQuestion>) applicationHasQuestions.stream().map(temp -> {
+   		 temp.setId(applicationHasQuestionId);
+     return temp;
+       }).collect(Collectors.toSet()); 
+   	
+   	 */
+   	 
+   	
+   	
+   	// application.setApplicationHasQuestions(applicationHasQuestions);
+   	//applicationquestions.
+   		 MappingJacksonValue jacksonValue = new MappingJacksonValue(applicationService.save(application));
+   		    jacksonValue.setSerializationView(Views.User.class);
+       return new ResponseEntity<Object>((jacksonValue), HttpStatus.OK);      
         }
 
+    
 @PostMapping("/create")
 public ResponseEntity<?> saveapplication(@RequestBody Application application){
 	Surveyparticipant surveyparticipant = surveyParticipantService.findByUsuarioUsernameAndSurveySurveyName("useruser", "encuesta1");

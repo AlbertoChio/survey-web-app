@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.example.demo.category.domino.Category;
 import com.example.demo.question.dominio.Question;
 import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
 import com.example.demo.util.dominio.Views;
@@ -75,7 +76,7 @@ public class Survey implements java.io.Serializable {
 	private boolean surveyActive;
 	
 	@JsonView(Views.User.class)
-	private Set<Question> questions = new HashSet<Question>(0);
+	private Set<Category> categories = new HashSet<Category>(0);
 	
 	private Set<Surveyparticipant> surveyparticipants = new HashSet<Surveyparticipant>(0);
 	
@@ -92,7 +93,7 @@ public class Survey implements java.io.Serializable {
 
 	public Survey(boolean surveyActive, String surveyDescription, String surveyExitMessage, Date surveyExpirationDate,
 			String surveyName, Date surveyPublicationDate, Date surveyStartDate, String surveyWelcomeMessage,
-			Set<Surveyparticipant> surveyparticipants, Set<Segmentation> segmentations, Set<Question> questions) {
+			Set<Category> categories, Set<Surveyparticipant> surveyparticipants, Set<Segmentation> segmentations) {
 		this.surveyActive = surveyActive;
 		this.surveyDescription = surveyDescription;
 		this.surveyExitMessage = surveyExitMessage;
@@ -101,10 +102,11 @@ public class Survey implements java.io.Serializable {
 		this.surveyPublicationDate = surveyPublicationDate;
 		this.surveyStartDate = surveyStartDate;
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
+		this.categories = categories;
 		this.surveyparticipants = surveyparticipants;
 		this.segmentations = segmentations;
-		this.questions = questions;
 	}
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -191,14 +193,16 @@ public class Survey implements java.io.Serializable {
 	public void setSurveyActive(boolean surveyActive) {
 		this.surveyActive = surveyActive;
 	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
-	public Set<Question> getQuestions() {
-		return this.questions;
+	public Set<Category> getCategories() {
+		return this.categories;
 	}
 
-	public void setQuestions(Set<Question> questions) {
-		this.questions = questions;
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
 	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
 	public Set<Surveyparticipant> getSurveyparticipants() {
 		return this.surveyparticipants;

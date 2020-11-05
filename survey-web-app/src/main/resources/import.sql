@@ -1,5 +1,4 @@
 USE encuesta;
-INSERT INTO `encuesta`.`category` (`CategoryName`) VALUES ('cat1');
 
 INSERT INTO `encuesta`.`rol` (`RolNombre`) VALUES ('ROLE_ADMIN');
 INSERT INTO `encuesta`.`rol` (`RolNombre`) VALUES ('ROLE_USER');
@@ -13,12 +12,14 @@ INSERT INTO `encuesta`.`usuario_has_rol` (`rol_RolID`, `Usuario_UsuarioID`) VALU
 INSERT INTO `encuesta`.`survey` (`SurveyName`,`SurveyActive`) VALUES ('encuesta1',1);
 INSERT INTO `encuesta`.`survey` (`SurveyName`,`SurveyActive`) VALUES ('encuesta2',1);
 
+INSERT INTO `encuesta`.`category` (`CategoryName`, `survey_SurveyID`) VALUES ('cat1', '1');
+
 INSERT INTO `encuesta`.`surveyparticipant` (`survey_SurveyID`, `Usuario_UsuarioID`) VALUES ('1', '2');
 
 INSERT INTO `encuesta`.`questiontype` (`QuestionTypeCode`, `QuestionTypeHasChoices`, `QuestionTypeName`) VALUES ('RANK', 1, 'ranking');
 
-INSERT INTO `encuesta`.`question` (`QuestionAnswerRequired`, `QuestionName`, `QuestionNumber`, `QuestionText`, `questiontype_QuestionTypeCode`, `survey_SurveyID`, `category_CategoryID`) VALUES (1, 'como te ', 1, 'descripcion de pregunta', 'rank', 1,1);
-INSERT INTO `encuesta`.`question` (`QuestionID`, `QuestionAnswerRequired`, `QuestionName`, `QuestionNumber`, `QuestionText`, `category_CategoryID`, `questiontype_QuestionTypeCode`, `survey_SurveyID`) VALUES (2, 1, 'asda', 1, 'asdasd', 1, 'rank',1);
+INSERT INTO `encuesta`.`question` (`QuestionAnswerRequired`, `QuestionName`, `QuestionNumber`, `QuestionText`, `questiontype_QuestionTypeCode`,  `category_CategoryID`) VALUES (1, 'como te ', 1, 'descripcion de pregunta', 'rank', 1);
+INSERT INTO `encuesta`.`question` (`QuestionID`, `QuestionAnswerRequired`, `QuestionName`, `QuestionNumber`, `QuestionText`, `category_CategoryID`, `questiontype_QuestionTypeCode`) VALUES (2, 1, 'asda', 1, 'asdasd', 1, 'rank');
 
 INSERT INTO `encuesta`.`segmentation` (`segmentationName`) VALUES ('genero');
 INSERT INTO `encuesta`.`segmentation` (`segmentationName`) VALUES ('localidad');

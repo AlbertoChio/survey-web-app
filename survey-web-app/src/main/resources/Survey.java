@@ -1,5 +1,5 @@
 // default package
-// Generated 19 oct 2020 21:12:21 by Hibernate Tools 5.1.10.Final
+// Generated 21 oct 2020 17:29:49 by Hibernate Tools 5.1.10.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -35,9 +35,9 @@ public class Survey implements java.io.Serializable {
 	private Date surveyPublicationDate;
 	private Date surveyStartDate;
 	private String surveyWelcomeMessage;
+	private Set<Category> categories = new HashSet<Category>(0);
 	private Set<Surveyparticipant> surveyparticipants = new HashSet<Surveyparticipant>(0);
 	private Set<Segmentation> segmentations = new HashSet<Segmentation>(0);
-	private Set<Question> questions = new HashSet<Question>(0);
 
 	public Survey() {
 	}
@@ -49,7 +49,7 @@ public class Survey implements java.io.Serializable {
 
 	public Survey(boolean surveyActive, String surveyDescription, String surveyExitMessage, Date surveyExpirationDate,
 			String surveyName, Date surveyPublicationDate, Date surveyStartDate, String surveyWelcomeMessage,
-			Set<Surveyparticipant> surveyparticipants, Set<Segmentation> segmentations, Set<Question> questions) {
+			Set<Category> categories, Set<Surveyparticipant> surveyparticipants, Set<Segmentation> segmentations) {
 		this.surveyActive = surveyActive;
 		this.surveyDescription = surveyDescription;
 		this.surveyExitMessage = surveyExitMessage;
@@ -58,9 +58,9 @@ public class Survey implements java.io.Serializable {
 		this.surveyPublicationDate = surveyPublicationDate;
 		this.surveyStartDate = surveyStartDate;
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
+		this.categories = categories;
 		this.surveyparticipants = surveyparticipants;
 		this.segmentations = segmentations;
-		this.questions = questions;
 	}
 
 	@Id
@@ -151,6 +151,15 @@ public class Survey implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
+	public Set<Category> getCategories() {
+		return this.categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
 	public Set<Surveyparticipant> getSurveyparticipants() {
 		return this.surveyparticipants;
 	}
@@ -169,15 +178,6 @@ public class Survey implements java.io.Serializable {
 
 	public void setSegmentations(Set<Segmentation> segmentations) {
 		this.segmentations = segmentations;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
-	public Set<Question> getQuestions() {
-		return this.questions;
-	}
-
-	public void setQuestions(Set<Question> questions) {
-		this.questions = questions;
 	}
 
 }

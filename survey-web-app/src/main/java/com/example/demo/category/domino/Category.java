@@ -11,10 +11,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.example.demo.question.dominio.Question;
+import com.example.demo.survey.dominio.Survey;
 import com.example.demo.util.dominio.Views;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,21 +34,24 @@ public class Category implements java.io.Serializable {
 	@JsonView(Views.User.class)
 	private int categoryId;
 	
+	private Survey survey;
+	
 	@JsonView(Views.User.class)
 	private String categoryName;
 	
+	@JsonView(Views.User.class)
 	private Set<Question> questions = new HashSet<Question>(0);
 
 	public Category() {
 	}
 
-	public Category(int categoryId, String categoryName) {
-		this.categoryId = categoryId;
+	public Category(Survey survey, String categoryName) {
+		this.survey = survey;
 		this.categoryName = categoryName;
 	}
 
-	public Category(int categoryId, String categoryName, Set<Question> questions) {
-		this.categoryId = categoryId;
+	public Category(Survey survey, String categoryName, Set<Question> questions) {
+		this.survey = survey;
 		this.categoryName = categoryName;
 		this.questions = questions;
 	}
@@ -60,6 +66,17 @@ public class Category implements java.io.Serializable {
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "survey_SurveyID", nullable = false)
+	public Survey getSurvey() {
+		return this.survey;
+	}
+
+	public void setSurvey(Survey survey) {
+		this.survey = survey;
+	}
+
 
 	@Column(name = "CategoryName", nullable = false, length = 45)
 	public String getCategoryName() {

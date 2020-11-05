@@ -12,6 +12,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>survey-web-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
 	<name>survey-web-app</name>
 	<description>Demo project for Spring Boot</description>
 

@@ -1,5 +1,5 @@
 // default package
-// Generated 19 oct 2020 21:12:21 by Hibernate Tools 5.1.10.Final
+// Generated 21 oct 2020 17:29:49 by Hibernate Tools 5.1.10.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,17 +22,20 @@ import javax.persistence.Table;
 public class Category implements java.io.Serializable {
 
 	private Integer categoryId;
+	private Survey survey;
 	private String categoryName;
 	private Set<Question> questions = new HashSet<Question>(0);
 
 	public Category() {
 	}
 
-	public Category(String categoryName) {
+	public Category(Survey survey, String categoryName) {
+		this.survey = survey;
 		this.categoryName = categoryName;
 	}
 
-	public Category(String categoryName, Set<Question> questions) {
+	public Category(Survey survey, String categoryName, Set<Question> questions) {
+		this.survey = survey;
 		this.categoryName = categoryName;
 		this.questions = questions;
 	}
@@ -45,6 +50,16 @@ public class Category implements java.io.Serializable {
 
 	public void setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "survey_SurveyID", nullable = false)
+	public Survey getSurvey() {
+		return this.survey;
+	}
+
+	public void setSurvey(Survey survey) {
+		this.survey = survey;
 	}
 
 	@Column(name = "CategoryName", nullable = false, length = 45)
