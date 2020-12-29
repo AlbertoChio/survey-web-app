@@ -1,5 +1,5 @@
 // default package
-// Generated 21 oct 2020 17:29:49 by Hibernate Tools 5.1.10.Final
+// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,23 +10,14 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ApplicationHasQuestionId implements java.io.Serializable {
 
-	private int questionQuestionId;
 	private int applicationIdapplication;
+	private int questionQuestionId;
 
 	public ApplicationHasQuestionId() {
 	}
 
-	public ApplicationHasQuestionId(int questionQuestionId, int applicationIdapplication) {
-		this.questionQuestionId = questionQuestionId;
+	public ApplicationHasQuestionId(int applicationIdapplication, int questionQuestionId) {
 		this.applicationIdapplication = applicationIdapplication;
-	}
-
-	@Column(name = "question_QuestionID", nullable = false)
-	public int getQuestionQuestionId() {
-		return this.questionQuestionId;
-	}
-
-	public void setQuestionQuestionId(int questionQuestionId) {
 		this.questionQuestionId = questionQuestionId;
 	}
 
@@ -39,6 +30,15 @@ public class ApplicationHasQuestionId implements java.io.Serializable {
 		this.applicationIdapplication = applicationIdapplication;
 	}
 
+	@Column(name = "question_QuestionID", nullable = false)
+	public int getQuestionQuestionId() {
+		return this.questionQuestionId;
+	}
+
+	public void setQuestionQuestionId(int questionQuestionId) {
+		this.questionQuestionId = questionQuestionId;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -48,15 +48,15 @@ public class ApplicationHasQuestionId implements java.io.Serializable {
 			return false;
 		ApplicationHasQuestionId castOther = (ApplicationHasQuestionId) other;
 
-		return (this.getQuestionQuestionId() == castOther.getQuestionQuestionId())
-				&& (this.getApplicationIdapplication() == castOther.getApplicationIdapplication());
+		return (this.getApplicationIdapplication() == castOther.getApplicationIdapplication())
+				&& (this.getQuestionQuestionId() == castOther.getQuestionQuestionId());
 	}
 
 	public int hashCode() {
 		int result = 17;
 
-		result = 37 * result + this.getQuestionQuestionId();
 		result = 37 * result + this.getApplicationIdapplication();
+		result = 37 * result + this.getQuestionQuestionId();
 		return result;
 	}
 

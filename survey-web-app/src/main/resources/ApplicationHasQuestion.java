@@ -1,5 +1,5 @@
 // default package
-// Generated 21 oct 2020 17:29:49 by Hibernate Tools 5.1.10.Final
+// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -43,8 +43,8 @@ public class ApplicationHasQuestion implements java.io.Serializable {
 	@EmbeddedId
 
 	@AttributeOverrides({
-			@AttributeOverride(name = "questionQuestionId", column = @Column(name = "question_QuestionID", nullable = false)),
-			@AttributeOverride(name = "applicationIdapplication", column = @Column(name = "application_idapplication", nullable = false)) })
+			@AttributeOverride(name = "applicationIdapplication", column = @Column(name = "application_idapplication", nullable = false)),
+			@AttributeOverride(name = "questionQuestionId", column = @Column(name = "question_QuestionID", nullable = false)) })
 	public ApplicationHasQuestionId getId() {
 		return this.id;
 	}

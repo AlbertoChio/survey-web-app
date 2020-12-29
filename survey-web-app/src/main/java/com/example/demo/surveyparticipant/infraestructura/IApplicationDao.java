@@ -9,4 +9,5 @@ import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
 
 public interface IApplicationDao extends CrudRepository<Application,Integer> {
     List<Application> findAll();
+	boolean existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(String username, String surveyname);
 }

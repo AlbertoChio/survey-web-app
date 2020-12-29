@@ -1,5 +1,5 @@
 // default package
-// Generated 21 oct 2020 17:29:49 by Hibernate Tools 5.1.10.Final
+// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -35,6 +35,7 @@ public class Survey implements java.io.Serializable {
 	private Date surveyPublicationDate;
 	private Date surveyStartDate;
 	private String surveyWelcomeMessage;
+	private byte allowMultipleApplications;
 	private Set<Category> categories = new HashSet<Category>(0);
 	private Set<Surveyparticipant> surveyparticipants = new HashSet<Surveyparticipant>(0);
 	private Set<Segmentation> segmentations = new HashSet<Segmentation>(0);
@@ -42,14 +43,16 @@ public class Survey implements java.io.Serializable {
 	public Survey() {
 	}
 
-	public Survey(boolean surveyActive, String surveyName) {
+	public Survey(boolean surveyActive, String surveyName, byte allowMultipleApplications) {
 		this.surveyActive = surveyActive;
 		this.surveyName = surveyName;
+		this.allowMultipleApplications = allowMultipleApplications;
 	}
 
 	public Survey(boolean surveyActive, String surveyDescription, String surveyExitMessage, Date surveyExpirationDate,
 			String surveyName, Date surveyPublicationDate, Date surveyStartDate, String surveyWelcomeMessage,
-			Set<Category> categories, Set<Surveyparticipant> surveyparticipants, Set<Segmentation> segmentations) {
+			byte allowMultipleApplications, Set<Category> categories, Set<Surveyparticipant> surveyparticipants,
+			Set<Segmentation> segmentations) {
 		this.surveyActive = surveyActive;
 		this.surveyDescription = surveyDescription;
 		this.surveyExitMessage = surveyExitMessage;
@@ -58,6 +61,7 @@ public class Survey implements java.io.Serializable {
 		this.surveyPublicationDate = surveyPublicationDate;
 		this.surveyStartDate = surveyStartDate;
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
+		this.allowMultipleApplications = allowMultipleApplications;
 		this.categories = categories;
 		this.surveyparticipants = surveyparticipants;
 		this.segmentations = segmentations;
@@ -148,6 +152,15 @@ public class Survey implements java.io.Serializable {
 
 	public void setSurveyWelcomeMessage(String surveyWelcomeMessage) {
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
+	}
+
+	@Column(name = "AllowMultipleApplications", nullable = false)
+	public byte getAllowMultipleApplications() {
+		return this.allowMultipleApplications;
+	}
+
+	public void setAllowMultipleApplications(byte allowMultipleApplications) {
+		this.allowMultipleApplications = allowMultipleApplications;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")

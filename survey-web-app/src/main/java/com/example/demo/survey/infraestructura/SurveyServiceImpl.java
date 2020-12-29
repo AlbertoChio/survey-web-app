@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.Usuario.infraestructura.IUsuarioService;
 import com.example.demo.survey.dominio.Survey;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
+import com.example.demo.surveyparticipant.infraestructura.IApplicationDao;
 
 @Service
 
@@ -19,6 +20,9 @@ public class SurveyServiceImpl implements ISurveyService {
 	
 	@Autowired
 	private ISurveyDao surveyDao;
+	
+	@Autowired
+	private IApplicationDao applicationDao;
 
 	@Override
 	public List<Survey> findAll() {
@@ -51,7 +55,9 @@ public class SurveyServiceImpl implements ISurveyService {
 		if(surveyDao.existsBySurveyparticipantsUsuarioUsernameAndSurveyName(username, surveyname)) {
 			Survey survey = surveyDao.findBySurveyName(surveyname);
 			if(!survey.surveyExpired()&&survey.getSurveyActive()) {
-				return true;
+		
+					return (survey.getAllowMultipleApplications() |!userHasApplied( username,  surveyname) );
+		
 			}
 		}
 				
@@ -68,6 +74,9 @@ public class SurveyServiceImpl implements ISurveyService {
 		return surveyDao.existsBySurveyparticipantsUsuarioUsernameAndSurveyName(username, survey);
 	}
 
+	public boolean userHasApplied(String username, String survey) {
+		return applicationDao.existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(username, survey);
+	}
 
 
 }

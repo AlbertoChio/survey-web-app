@@ -1,11 +1,13 @@
 // default package
-// Generated 21 oct 2020 17:29:49 by Hibernate Tools 5.1.10.Final
+// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
 
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,35 +23,34 @@ import javax.persistence.Table;
 @Table(name = "application", catalog = "encuesta")
 public class Application implements java.io.Serializable {
 
-	private int idapplication;
+	private Integer idapplication;
 	private Surveyparticipant surveyparticipant;
-	private Set<Segmentationitem> segmentationitems = new HashSet<Segmentationitem>(0);
 	private Set<ApplicationHasQuestion> applicationHasQuestions = new HashSet<ApplicationHasQuestion>(0);
+	private Set<Segmentationitem> segmentationitems = new HashSet<Segmentationitem>(0);
 
 	public Application() {
 	}
 
-	public Application(int idapplication, Surveyparticipant surveyparticipant) {
-		this.idapplication = idapplication;
+	public Application(Surveyparticipant surveyparticipant) {
 		this.surveyparticipant = surveyparticipant;
 	}
 
-	public Application(int idapplication, Surveyparticipant surveyparticipant, Set<Segmentationitem> segmentationitems,
-			Set<ApplicationHasQuestion> applicationHasQuestions) {
-		this.idapplication = idapplication;
+	public Application(Surveyparticipant surveyparticipant, Set<ApplicationHasQuestion> applicationHasQuestions,
+			Set<Segmentationitem> segmentationitems) {
 		this.surveyparticipant = surveyparticipant;
-		this.segmentationitems = segmentationitems;
 		this.applicationHasQuestions = applicationHasQuestions;
+		this.segmentationitems = segmentationitems;
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "idapplication", unique = true, nullable = false)
-	public int getIdapplication() {
+	public Integer getIdapplication() {
 		return this.idapplication;
 	}
 
-	public void setIdapplication(int idapplication) {
+	public void setIdapplication(Integer idapplication) {
 		this.idapplication = idapplication;
 	}
 
@@ -63,6 +64,15 @@ public class Application implements java.io.Serializable {
 		this.surveyparticipant = surveyparticipant;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "application")
+	public Set<ApplicationHasQuestion> getApplicationHasQuestions() {
+		return this.applicationHasQuestions;
+	}
+
+	public void setApplicationHasQuestions(Set<ApplicationHasQuestion> applicationHasQuestions) {
+		this.applicationHasQuestions = applicationHasQuestions;
+	}
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "application_has_segmentationitem", catalog = "encuesta", joinColumns = {
 			@JoinColumn(name = "application_idapplication", nullable = false, updatable = false) }, inverseJoinColumns = {
@@ -73,15 +83,6 @@ public class Application implements java.io.Serializable {
 
 	public void setSegmentationitems(Set<Segmentationitem> segmentationitems) {
 		this.segmentationitems = segmentationitems;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "application")
-	public Set<ApplicationHasQuestion> getApplicationHasQuestions() {
-		return this.applicationHasQuestions;
-	}
-
-	public void setApplicationHasQuestions(Set<ApplicationHasQuestion> applicationHasQuestions) {
-		this.applicationHasQuestions = applicationHasQuestions;
 	}
 
 }

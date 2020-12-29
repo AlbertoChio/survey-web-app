@@ -9,8 +9,8 @@ INSERT INTO `encuesta`.`usuario` (`Username`) VALUES ('useruser');
 INSERT INTO `encuesta`.`usuario_has_rol` (`rol_RolID`, `Usuario_UsuarioID`) VALUES ('1', '1');
 INSERT INTO `encuesta`.`usuario_has_rol` (`rol_RolID`, `Usuario_UsuarioID`) VALUES ('2', '2');
 
-INSERT INTO `encuesta`.`survey` (`SurveyName`,`SurveyActive`) VALUES ('encuesta1',1);
-INSERT INTO `encuesta`.`survey` (`SurveyName`,`SurveyActive`) VALUES ('encuesta2',1);
+INSERT INTO `encuesta`.`survey` (`SurveyName`,`SurveyActive`,`AllowMultipleApplications`) VALUES ('encuesta1',1,0);
+INSERT INTO `encuesta`.`survey` (`SurveyName`,`SurveyActive`,`AllowMultipleApplications`) VALUES ('encuesta2',1,0);
 
 INSERT INTO `encuesta`.`category` (`CategoryName`, `survey_SurveyID`) VALUES ('cat1', '1');
 
@@ -35,6 +35,4 @@ INSERT INTO `encuesta`.`survey_has_segmentation` (`survey_SurveyID`, `segmentati
 
 UPDATE `encuesta`.`usuario` SET `Password` = '$2a$10$aisvb/w8kIr28jUZmUHk5.N6weP1PLlRknZGfJ7TWCepwEJDOUtN6' WHERE (`UsuarioID` = '2');
 UPDATE `encuesta`.`usuario` SET `Password` = '$2a$10$aisvb/w8kIr28jUZmUHk5.N6weP1PLlRknZGfJ7TWCepwEJDOUtN6' WHERE (`UsuarioID` = '1');
-
-INSERT INTO `encuesta`.`application` (`idapplication`, `surveyparticipant_SurveyparticipantID`) VALUES ('1', '1');
 

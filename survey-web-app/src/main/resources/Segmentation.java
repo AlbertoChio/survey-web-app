@@ -1,11 +1,13 @@
 // default package
-// Generated 21 oct 2020 17:29:49 by Hibernate Tools 5.1.10.Final
+// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
 
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,7 +23,7 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "segmentation", catalog = "encuesta", uniqueConstraints = @UniqueConstraint(columnNames = "segmentationName"))
 public class Segmentation implements java.io.Serializable {
 
-	private int segmentationId;
+	private Integer segmentationId;
 	private String segmentationName;
 	private Set<Survey> surveys = new HashSet<Survey>(0);
 	private Set<Segmentationitem> segmentationitems = new HashSet<Segmentationitem>(0);
@@ -29,27 +31,25 @@ public class Segmentation implements java.io.Serializable {
 	public Segmentation() {
 	}
 
-	public Segmentation(int segmentationId, String segmentationName) {
-		this.segmentationId = segmentationId;
+	public Segmentation(String segmentationName) {
 		this.segmentationName = segmentationName;
 	}
 
-	public Segmentation(int segmentationId, String segmentationName, Set<Survey> surveys,
-			Set<Segmentationitem> segmentationitems) {
-		this.segmentationId = segmentationId;
+	public Segmentation(String segmentationName, Set<Survey> surveys, Set<Segmentationitem> segmentationitems) {
 		this.segmentationName = segmentationName;
 		this.surveys = surveys;
 		this.segmentationitems = segmentationitems;
 	}
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "segmentationID", unique = true, nullable = false)
-	public int getSegmentationId() {
+	public Integer getSegmentationId() {
 		return this.segmentationId;
 	}
 
-	public void setSegmentationId(int segmentationId) {
+	public void setSegmentationId(Integer segmentationId) {
 		this.segmentationId = segmentationId;
 	}
 

@@ -73,6 +73,9 @@ public class Survey implements java.io.Serializable {
 	private String surveyWelcomeMessage;
 	
 	@JsonView(Views.User.class)
+	private boolean allowMultipleApplications;
+	
+	@JsonView(Views.User.class)
 	private boolean surveyActive;
 	
 	@JsonView(Views.User.class)
@@ -86,14 +89,16 @@ public class Survey implements java.io.Serializable {
 	public Survey() {
 	}
 
-	public Survey(boolean surveyActive, String surveyName) {
+	public Survey(boolean surveyActive, String surveyName, boolean allowMultipleApplications) {
 		this.surveyActive = surveyActive;
 		this.surveyName = surveyName;
+		this.allowMultipleApplications = allowMultipleApplications;
 	}
 
 	public Survey(boolean surveyActive, String surveyDescription, String surveyExitMessage, Date surveyExpirationDate,
 			String surveyName, Date surveyPublicationDate, Date surveyStartDate, String surveyWelcomeMessage,
-			Set<Category> categories, Set<Surveyparticipant> surveyparticipants, Set<Segmentation> segmentations) {
+			boolean allowMultipleApplications, Set<Category> categories, Set<Surveyparticipant> surveyparticipants,
+			Set<Segmentation> segmentations) {
 		this.surveyActive = surveyActive;
 		this.surveyDescription = surveyDescription;
 		this.surveyExitMessage = surveyExitMessage;
@@ -102,11 +107,11 @@ public class Survey implements java.io.Serializable {
 		this.surveyPublicationDate = surveyPublicationDate;
 		this.surveyStartDate = surveyStartDate;
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
+		this.allowMultipleApplications = allowMultipleApplications;
 		this.categories = categories;
 		this.surveyparticipants = surveyparticipants;
 		this.segmentations = segmentations;
 	}
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -183,6 +188,15 @@ public class Survey implements java.io.Serializable {
 
 	public void setSurveyWelcomeMessage(String surveyWelcomeMessage) {
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
+	}
+	
+	@Column(name = "AllowMultipleApplications", nullable = false)
+	public boolean getAllowMultipleApplications() {
+		return this.allowMultipleApplications;
+	}
+
+	public void setAllowMultipleApplications(boolean allowMultipleApplications) {
+		this.allowMultipleApplications = allowMultipleApplications;
 	}
 	
 	@Column(name = "SurveyActive", nullable = false)

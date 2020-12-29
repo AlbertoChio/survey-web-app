@@ -35,6 +35,11 @@ public class ApplicationServiceImpl implements IApplicationService {
                 
 		return newAnswerDto;
 	}
-	
+
+	@Override
+	public boolean existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(String username, String surveyname) {
+		return applicationDao.existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(username, surveyname);
+	}
+
 
 }

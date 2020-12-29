@@ -102,7 +102,7 @@ public class SurveyRestController {
 		}
 		
 		
-	return new ResponseEntity(new Mensaje("No puedes iniciar porque la encuesta se encuentra expirada o inactiva"), HttpStatus.BAD_REQUEST);
+	return new ResponseEntity(new Mensaje("Encuesta expirada, inactiva o ya has excedido el número de aplicaciones permitidas"), HttpStatus.BAD_REQUEST);
 	}
 	
 	

@@ -12,4 +12,5 @@ public interface IApplicationService {
 	public Application save(Application application);
 	public List<Application> findAll();
 	public List<NewAnswerDto> aplicationToNewAnswerDto(List<Application> applications);
+	public boolean existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(String username, String surveyname);
 }
