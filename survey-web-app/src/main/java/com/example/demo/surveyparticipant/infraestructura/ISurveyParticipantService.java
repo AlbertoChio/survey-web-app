@@ -17,9 +17,13 @@ import com.example.demo.surveyparticipant.dominio.dtos.ParticipantSurveyListDto;
 public interface ISurveyParticipantService {
 
 	public List<Surveyparticipant> findAll();
+
 	public Surveyparticipant save(Surveyparticipant surveyparticipant);
+
 	public List<Surveyparticipant> findByUsuarioUsername(String username);
+
 	public List<ParticipantSurveyListDto> listParticipantSurveyListDto(List<Surveyparticipant> surveyparticipants);
-	public Surveyparticipant findByUsuarioUsernameAndSurveySurveyName(String username,String surveyname);
+
+	public Surveyparticipant findByUsuarioUsernameAndSurveySurveyName(String username, String surveyname);
 
 }

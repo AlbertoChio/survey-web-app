@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.demo.Usuario.dominio.Usuario;
 import com.example.demo.survey.dominio.Survey;
+import com.example.demo.survey.dominio.dtos.SurveyChartsDto;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
 
 public interface ISurveyService {
@@ -16,13 +17,15 @@ public interface ISurveyService {
 
 	public Survey findBySurveyName(String surveyName);
 
-	public List<Survey> findBySurveyparticipantsUsuarioUsername (String username);
-	
+	public List<Survey> findBySurveyparticipantsUsuarioUsername(String username);
+
 	public List<SurveyListDto> listSurveyListDto(List<Survey> surveys);
-	
+
 	public Boolean canUserStartSurvey(String survey, String username);
-	
+
 	public boolean existsBySurveyName(String nombre);
-	
+
 	public boolean existsBySurveyparticipantsUsuarioUsernameAndSurveyName(String username, String survey);
+
+	public SurveyChartsDto SurveyToSurveyChartDto(Survey survey);
 }

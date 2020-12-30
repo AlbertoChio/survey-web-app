@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 @Entity
 @Table(name = "application_has_question", catalog = "encuesta")
 public class ApplicationHasQuestion implements java.io.Serializable {
-	
+
 	@JsonView(Views.User.class)
 	private ApplicationHasQuestionId id;
 	private Application application;

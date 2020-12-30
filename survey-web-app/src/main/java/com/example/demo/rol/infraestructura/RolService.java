@@ -11,19 +11,20 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class RolService{
+public class RolService {
 
-    @Autowired
-    RolRepository rolRepository;
+	@Autowired
+	RolRepository rolRepository;
 
-    public Optional<Rol> getByRolNombre(RolNombre rolNombre){
-        return rolRepository.findByRolNombre(rolNombre);
-    }
-    public Optional<Rol> getByRolNombre(String rolNombre){
-        return rolRepository.findByRolNombre(rolNombre);
-    }
+	public Optional<Rol> getByRolNombre(RolNombre rolNombre) {
+		return rolRepository.findByRolNombre(rolNombre);
+	}
 
-    public void save(Rol rol){
-        rolRepository.save(rol);
-    }
+	public Optional<Rol> getByRolNombre(String rolNombre) {
+		return rolRepository.findByRolNombre(rolNombre);
+	}
+
+	public void save(Rol rol) {
+		rolRepository.save(rol);
+	}
 }

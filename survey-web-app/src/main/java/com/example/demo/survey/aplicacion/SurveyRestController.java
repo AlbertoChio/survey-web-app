@@ -42,9 +42,9 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api")
 public class SurveyRestController {
-	
-    @Autowired
-    ObjectMapper mapper;
+
+	@Autowired
+	ObjectMapper mapper;
 
 	@Autowired
 	private ISurveyService surveyService;
@@ -53,71 +53,78 @@ public class SurveyRestController {
 	@GetMapping("/encuestasss")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Survey> indexx() {
-		List<Survey> surveys=surveyService.findAll();
-		
+		List<Survey> surveys = surveyService.findAll();
+
 		return surveys;
 	}
-
 
 	@GetMapping("/encuestass")
 	@ResponseStatus(HttpStatus.OK)
 	public List<SurveyListDto> index() {
-		List<Survey> surveys=surveyService.findAll();
+		List<Survey> surveys = surveyService.findAll();
 		List<SurveyListDto> surveysListDto = surveyService.listSurveyListDto(surveys);
 		return surveysListDto;
 	}
 
 	@GetMapping("/encuesta")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<MappingJacksonValue>  listmysurveyparticiants(Authentication authentication) {
-		List<Survey> surveys=surveyService.findBySurveyparticipantsUsuarioUsername(authentication.getName());
+	public ResponseEntity<MappingJacksonValue> listmysurveyparticiants(Authentication authentication) {
+		List<Survey> surveys = surveyService.findBySurveyparticipantsUsuarioUsername(authentication.getName());
 		List<SurveyListDto> surveysListDto = surveyService.listSurveyListDto(surveys);
-		
-		
-	    MappingJacksonValue jacksonValue = new MappingJacksonValue(surveysListDto);
 
-	    if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(RolNombre.ROLE_ADMIN.toString()))) {
-	    	log.info("Admin");
-	        jacksonValue.setSerializationView(Views.Admin.class);
-	    } else if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(RolNombre.ROLE_USER.toString()))) {
-	    	log.info("user");
-	    	jacksonValue.setSerializationView(Views.User.class);
-	    }else {
-	    	log.info(authentication.getAuthorities().toString());
-	    }
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(surveysListDto);
 
-	    return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
+		if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(RolNombre.ROLE_ADMIN.toString()))) {
+			log.info("Admin");
+			jacksonValue.setSerializationView(Views.Admin.class);
+		} else if (authentication.getAuthorities()
+				.contains(new SimpleGrantedAuthority(RolNombre.ROLE_USER.toString()))) {
+			log.info("user");
+			jacksonValue.setSerializationView(Views.User.class);
+		} else {
+			log.info(authentication.getAuthorities().toString());
+		}
+
+		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
 	}
-		
-		
-	
-	
+
 	@GetMapping("/encuesta/answer/{surveyname}")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> surveyuserParticipantRequestSurvey(@PathVariable("surveyname") String surveyname, Authentication authentication) {
-		if(surveyService.canUserStartSurvey(authentication.getName(),surveyname)) {
+	public ResponseEntity<?> surveyuserParticipantRequestSurvey(@PathVariable("surveyname") String surveyname,
+			Authentication authentication) {
+		if (surveyService.canUserStartSurvey(authentication.getName(), surveyname)) {
 			MappingJacksonValue jacksonValue = new MappingJacksonValue(surveyService.findBySurveyName(surveyname));
 			jacksonValue.setSerializationView(Views.User.class);
 			return new ResponseEntity(jacksonValue, HttpStatus.OK);
 		}
-		
-		
-	return new ResponseEntity(new Mensaje("Encuesta expirada, inactiva o ya has excedido el número de aplicaciones permitidas"), HttpStatus.BAD_REQUEST);
+
+		return new ResponseEntity(
+				new Mensaje("Encuesta expirada, inactiva o ya has excedido el número de aplicaciones permitidas"),
+				HttpStatus.BAD_REQUEST);
 	}
-	
-	
+
 	@GetMapping("/encuestaca/{role}")
-	public ResponseEntity<MappingJacksonValue>  getEmployee(@PathVariable String role) {
-		List<Survey> surveys=surveyService.findAll();
-		    MappingJacksonValue jacksonValue = new MappingJacksonValue(surveys);
+	public ResponseEntity<MappingJacksonValue> getEmployee(@PathVariable String role) {
+		List<Survey> surveys = surveyService.findAll();
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(surveys);
 
-		    if (role.equals("MANAGER")) {
-		        jacksonValue.setSerializationView(Views.Admin.class);
-		    } else if (role.equals("EMPLOYEE")) {
-		    	jacksonValue.setSerializationView(Views.User.class);
-		    }
-
-		    return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
+		if (role.equals("MANAGER")) {
+			jacksonValue.setSerializationView(Views.Admin.class);
+		} else if (role.equals("EMPLOYEE")) {
+			jacksonValue.setSerializationView(Views.User.class);
 		}
-}
 
+		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
+	}
+
+	@GetMapping("/encuesta/chart/{surveyname}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> surveyuserRequestSurveyChartsDto(@PathVariable("surveyname") String surveyname) {
+
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(
+				surveyService.SurveyToSurveyChartDto(surveyService.findBySurveyName(surveyname)));
+		return new ResponseEntity(jacksonValue, HttpStatus.OK);
+
+	}
+
+}

@@ -36,14 +36,14 @@ public class Segmentationitem implements java.io.Serializable {
 
 	@JsonView(Views.User.class)
 	private int segmentationitemId;
-	
+
 	private Segmentation segmentation;
-	
+
 	@JsonView(Views.User.class)
 	private String segmentationitemName;
-	
+
 	private Set<Application> applications = new HashSet<Application>(0);
-	
+
 	public Segmentationitem() {
 	}
 
@@ -72,7 +72,7 @@ public class Segmentationitem implements java.io.Serializable {
 		this.segmentationitemId = segmentationitemId;
 	}
 
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "segmentation_segmentationID", nullable = false)
 	public Segmentation getSegmentation() {
@@ -91,6 +91,7 @@ public class Segmentationitem implements java.io.Serializable {
 	public void setSegmentationitemName(String segmentationitemName) {
 		this.segmentationitemName = segmentationitemName;
 	}
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "application_has_segmentationitem", catalog = "encuesta", joinColumns = {
 			@JoinColumn(name = "segmentationitem_segmentationitemID", nullable = false, updatable = false) }, inverseJoinColumns = {

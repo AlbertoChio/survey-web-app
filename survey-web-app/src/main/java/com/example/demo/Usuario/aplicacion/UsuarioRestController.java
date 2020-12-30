@@ -26,7 +26,6 @@ import com.example.demo.rol.dominio.Rol;
 import com.example.demo.util.dominio.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 
-
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RestController
 @RequestMapping("/api")
@@ -38,21 +37,19 @@ public class UsuarioRestController {
 	@JsonView(Views.User.class)
 	@GetMapping("/usuarios/")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<MappingJacksonValue>  index() {
-		//Set<Rol> rols = new HashSet<Rol>(0);
-		//rols.add(new Rol(1,"ROLE_ADMIN"));
-		//Usuario rolUser = new Usuario();
-		//rolUser.setUsername("nuevouser");
-		//rolUser.setRols(rols);
-		//usuarioService.save(rolUser);
-	   
-	    
-	       
-		List<Usuario> usuarios= usuarioService.findAll();
-		 MappingJacksonValue jacksonValue = new MappingJacksonValue(usuarios);
-		 jacksonValue.setSerializationView(Views.User.class);
-		    return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
-			
+	public ResponseEntity<MappingJacksonValue> index() {
+		// Set<Rol> rols = new HashSet<Rol>(0);
+		// rols.add(new Rol(1,"ROLE_ADMIN"));
+		// Usuario rolUser = new Usuario();
+		// rolUser.setUsername("nuevouser");
+		// rolUser.setRols(rols);
+		// usuarioService.save(rolUser);
+
+		List<Usuario> usuarios = usuarioService.findAll();
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(usuarios);
+		jacksonValue.setSerializationView(Views.User.class);
+		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
+
 	}
-  	
+
 }

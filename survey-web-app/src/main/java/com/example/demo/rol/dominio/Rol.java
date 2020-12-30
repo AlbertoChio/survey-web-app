@@ -32,8 +32,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "rol", catalog = "encuesta")
 public class Rol implements java.io.Serializable {
-	
-	
+
 	private int rolId;
 	@JsonView(Views.User.class)
 	private String rolNombre;
@@ -73,7 +72,8 @@ public class Rol implements java.io.Serializable {
 	public void setRolNombre(String rolNombre) {
 		this.rolNombre = rolNombre;
 	}
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "usuario_has_rol", catalog = "encuesta", joinColumns = {
 			@JoinColumn(name = "rol_RolID", nullable = false, updatable = false) }, inverseJoinColumns = {

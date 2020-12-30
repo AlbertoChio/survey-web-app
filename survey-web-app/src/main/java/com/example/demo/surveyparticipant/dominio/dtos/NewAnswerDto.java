@@ -4,18 +4,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.example.demo.survey.dominio.Segmentationitem;
+import com.example.demo.surveyparticipant.dominio.Application;
 import com.example.demo.surveyparticipantanswer.dominio.ApplicationHasQuestion;
 import com.example.demo.util.dominio.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class NewAnswerDto {
-	
+
 	@JsonView(Views.User.class)
 	private Set<Segmentationitem> segmentationitems = new HashSet<Segmentationitem>(0);
 	@JsonView(Views.User.class)
 	private Set<ApplicationHasQuestion> applicationHasQuestions = new HashSet<ApplicationHasQuestion>(0);
-	
-	
+
 	public NewAnswerDto() {
 		super();
 	}
@@ -25,19 +25,26 @@ public class NewAnswerDto {
 		this.segmentationitems = segmentationitems;
 		this.applicationHasQuestions = applicationHasQuestions;
 	}
-	
+
+	public NewAnswerDto(Application temp) {
+		this.segmentationitems = temp.getSegmentationitems();
+		this.applicationHasQuestions = temp.getApplicationHasQuestions();
+	}
+
 	public Set<Segmentationitem> getSegmentationitems() {
 		return segmentationitems;
 	}
+
 	public void setSegmentationitems(Set<Segmentationitem> segmentationitems) {
 		this.segmentationitems = segmentationitems;
 	}
+
 	public Set<ApplicationHasQuestion> getApplicationHasQuestions() {
 		return applicationHasQuestions;
 	}
+
 	public void setApplicationHasQuestions(Set<ApplicationHasQuestion> applicationHasQuestions) {
 		this.applicationHasQuestions = applicationHasQuestions;
 	}
 
-	
 }

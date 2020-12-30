@@ -12,7 +12,7 @@ import com.example.demo.Usuario.dominio.Usuario;
 @Service
 
 public class UsuarioServiceImpl implements IUsuarioService {
-	
+
 	@Autowired
 	private IUsuarioDao usuarioDao;
 
@@ -20,22 +20,21 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	public List<Usuario> findAll() {
 		return usuarioDao.findAll();
 	}
-	
-    public boolean existsByUsername(String nombreUsuario){
-        return usuarioDao.existsByUsername(nombreUsuario);
-    }
-	
-    public boolean existsByEmail(String email){
-        return usuarioDao.existsByEmail(email);
-    }
-	
-    public void save(Usuario usuario){
+
+	public boolean existsByUsername(String nombreUsuario) {
+		return usuarioDao.existsByUsername(nombreUsuario);
+	}
+
+	public boolean existsByEmail(String email) {
+		return usuarioDao.existsByEmail(email);
+	}
+
+	public void save(Usuario usuario) {
 		usuarioDao.save(usuario);
-    }
+	}
 
 	@Override
 	public Optional<Usuario> findByUsername(String nombreUsuario) {
-		// TODO Auto-generated method stub
 		return usuarioDao.findByUsername(nombreUsuario);
 	}
 

@@ -10,12 +10,15 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.example.demo.survey.dominio.Survey;
 
+public interface ISurveyDao extends CrudRepository<Survey, Integer> {
+	List<Survey> findAll();
 
-public interface ISurveyDao extends CrudRepository<Survey,Integer> {
-    List<Survey> findAll();
-    Survey findBySurveyName(String surveyName);
-    List<Survey> findBySurveyparticipantsUsuarioUsername (String username);
-    boolean existsBySurveyName(String nombre);
-    boolean existsBySurveyparticipantsUsuarioUsernameAndSurveyName(String username, String survey);
-    
+	Survey findBySurveyName(String surveyName);
+
+	List<Survey> findBySurveyparticipantsUsuarioUsername(String username);
+
+	boolean existsBySurveyName(String nombre);
+
+	boolean existsBySurveyparticipantsUsuarioUsernameAndSurveyName(String username, String survey);
+
 }

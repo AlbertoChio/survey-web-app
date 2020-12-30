@@ -11,16 +11,18 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Usuario.infraestructura.IUsuarioService;
 import com.example.demo.survey.dominio.Survey;
+import com.example.demo.survey.dominio.dtos.SurveyChartsDto;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
 import com.example.demo.surveyparticipant.infraestructura.IApplicationDao;
+import com.example.demo.surveyparticipantanswer.dominio.dtos.ApplicationHasQuestionChartsDto;
 
 @Service
 
 public class SurveyServiceImpl implements ISurveyService {
-	
+
 	@Autowired
 	private ISurveyDao surveyDao;
-	
+
 	@Autowired
 	private IApplicationDao applicationDao;
 
@@ -42,27 +44,26 @@ public class SurveyServiceImpl implements ISurveyService {
 
 	@Override
 	public List<SurveyListDto> listSurveyListDto(List<Survey> surveys) {
-        List<SurveyListDto> surveyListDto = surveys.stream().map(temp -> {
-        	SurveyListDto p = new SurveyListDto(temp.getSurveyName(),temp.getSurveyPublicationDate(),temp.getSurveyActive(),temp.getSurveyStartDate(),temp.getSurveyExpirationDate(),temp.surveyExpired(),temp.currenDate());
-      return p;
-        }).collect(Collectors.toList());
-                
+		List<SurveyListDto> surveyListDto = surveys.stream().map(temp -> {
+			SurveyListDto p = new SurveyListDto(temp);
+			return p;
+		}).collect(Collectors.toList());
 		return surveyListDto;
 	}
-	
+
 	@Override
 	public Boolean canUserStartSurvey(String username, String surveyname) {
-		if(surveyDao.existsBySurveyparticipantsUsuarioUsernameAndSurveyName(username, surveyname)) {
+		if (surveyDao.existsBySurveyparticipantsUsuarioUsernameAndSurveyName(username, surveyname)) {
 			Survey survey = surveyDao.findBySurveyName(surveyname);
-			if(!survey.surveyExpired()&&survey.getSurveyActive()) {
-		
-					return (survey.getAllowMultipleApplications() |!userHasApplied( username,  surveyname) );
-		
+			if (!survey.surveyExpired() && survey.getSurveyActive()) {
+
+				return (survey.getAllowMultipleApplications() | !userHasApplied(username, surveyname));
+
 			}
 		}
-				
-			return false;
-		}
+
+		return false;
+	}
 
 	@Override
 	public boolean existsBySurveyName(String nombre) {
@@ -75,8 +76,15 @@ public class SurveyServiceImpl implements ISurveyService {
 	}
 
 	public boolean userHasApplied(String username, String survey) {
-		return applicationDao.existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(username, survey);
+		return applicationDao.existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(username,
+				survey);
 	}
 
+	@Override
+	public SurveyChartsDto SurveyToSurveyChartDto(Survey survey) {
+
+		SurveyChartsDto surveyChartsDto = new SurveyChartsDto(survey);
+		return surveyChartsDto;
+	}
 
 }

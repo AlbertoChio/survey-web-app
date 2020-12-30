@@ -39,27 +39,27 @@ public class Question implements java.io.Serializable {
 	private int questionId;
 
 	private Category category;
-	
+
 	@JsonView(Views.User.class)
 	private Questiontype questiontype;
-	
+
 	@JsonView(Views.User.class)
 	private Boolean questionAnswerRequired;
-	
+
 	@JsonView(Views.User.class)
 	private String questionName;
-	
+
 	@JsonView(Views.User.class)
 	private Integer questionNumber;
-	
+
 	@JsonView(Views.User.class)
 	private String questionText;
-	
+
 	private Set<ApplicationHasQuestion> applicationHasQuestions = new HashSet<ApplicationHasQuestion>(0);
-	
+
 	@JsonView(Views.User.class)
 	private Set<Choice> choices = new HashSet<Choice>(0);
-	
+
 	public Question() {
 	}
 
@@ -80,7 +80,7 @@ public class Question implements java.io.Serializable {
 		this.choices = choices;
 		this.applicationHasQuestions = applicationHasQuestions;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "QuestionID", unique = true, nullable = false)
@@ -91,7 +91,7 @@ public class Question implements java.io.Serializable {
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_CategoryID", nullable = false)
 	public Category getCategory() {
@@ -101,8 +101,8 @@ public class Question implements java.io.Serializable {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "questiontype_QuestionTypeCode", nullable = false)
 	public Questiontype getQuestiontype() {
@@ -112,7 +112,6 @@ public class Question implements java.io.Serializable {
 	public void setQuestiontype(Questiontype questiontype) {
 		this.questiontype = questiontype;
 	}
-
 
 	@Column(name = "QuestionAnswerRequired")
 	public Boolean getQuestionAnswerRequired() {

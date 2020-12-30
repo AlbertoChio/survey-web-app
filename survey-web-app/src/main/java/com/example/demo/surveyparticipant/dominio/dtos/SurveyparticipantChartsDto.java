@@ -2,33 +2,34 @@ package com.example.demo.surveyparticipant.dominio.dtos;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.example.demo.Usuario.dominio.Usuario;
 import com.example.demo.survey.dominio.Survey;
-import com.example.demo.survey.dominio.dtos.SurveyListDto;
 import com.example.demo.surveyparticipant.dominio.Application;
 import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
 import com.example.demo.util.dominio.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 
-public class ParticipantSurveyListDto {
+public class SurveyparticipantChartsDto {
 
 	private Integer surveyparticipantId;
-	private SurveyListDto survey;
 
-	public ParticipantSurveyListDto(Integer surveyparticipantId, SurveyListDto survey) {
+	private Set<ApplicationChartsDto> applications = new HashSet<ApplicationChartsDto>(0);
+
+	public SurveyparticipantChartsDto(Integer surveyparticipantId, Set<ApplicationChartsDto> applications) {
 		super();
 		this.surveyparticipantId = surveyparticipantId;
-		this.survey = survey;
+		this.applications = applications;
 	}
 
-	public ParticipantSurveyListDto() {
+	public SurveyparticipantChartsDto(Surveyparticipant temp) {
 		super();
-	}
-
-	public ParticipantSurveyListDto(Surveyparticipant temp) {
 		this.surveyparticipantId = temp.getSurveyparticipantId();
-		this.survey = new SurveyListDto(temp.getSurvey());
+		this.applications = temp.getApplications().stream().map(tempp -> {
+			ApplicationChartsDto p = new ApplicationChartsDto(tempp);
+			return p;
+		}).collect(Collectors.toSet());
 	}
 
 	public Integer getSurveyparticipantId() {
@@ -39,12 +40,12 @@ public class ParticipantSurveyListDto {
 		this.surveyparticipantId = surveyparticipantId;
 	}
 
-	public SurveyListDto getSurvey() {
-		return survey;
+	public Set<ApplicationChartsDto> getApplications() {
+		return applications;
 	}
 
-	public void setSurvey(SurveyListDto survey) {
-		this.survey = survey;
+	public void setApplications(Set<ApplicationChartsDto> applications) {
+		this.applications = applications;
 	}
 
 }

@@ -10,7 +10,13 @@ import com.example.demo.surveyparticipant.dominio.dtos.NewAnswerDto;
 
 public interface IApplicationService {
 	public Application save(Application application);
+
 	public List<Application> findAll();
+
 	public List<NewAnswerDto> aplicationToNewAnswerDto(List<Application> applications);
-	public boolean existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(String username, String surveyname);
+
+	public boolean existsBySurveyparticipantUsuarioUsernameAndSurveyparticipantSurveySurveyName(String username,
+			String surveyname);
+
+	public Boolean canUserAnswerSurvey(String survey, String username);
 }

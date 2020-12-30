@@ -13,12 +13,12 @@ import com.example.demo.Usuario.infraestructura.IUsuarioDao;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    IUsuarioDao usuarioService;
+	@Autowired
+	IUsuarioDao usuarioService;
 
-    @Override
-    public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
-        Usuario usuario = usuarioService.findByUsername(nombreUsuario).get();
-        return UsuarioPrincipal.build(usuario);
-    }
+	@Override
+	public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
+		Usuario usuario = usuarioService.findByUsername(nombreUsuario).get();
+		return UsuarioPrincipal.build(usuario);
+	}
 }

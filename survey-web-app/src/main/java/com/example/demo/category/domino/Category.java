@@ -33,12 +33,12 @@ public class Category implements java.io.Serializable {
 
 	@JsonView(Views.User.class)
 	private int categoryId;
-	
+
 	private Survey survey;
-	
+
 	@JsonView(Views.User.class)
 	private String categoryName;
-	
+
 	@JsonView(Views.User.class)
 	private Set<Question> questions = new HashSet<Question>(0);
 
@@ -66,7 +66,7 @@ public class Category implements java.io.Serializable {
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "survey_SurveyID", nullable = false)
 	public Survey getSurvey() {
@@ -76,7 +76,6 @@ public class Category implements java.io.Serializable {
 	public void setSurvey(Survey survey) {
 		this.survey = survey;
 	}
-
 
 	@Column(name = "CategoryName", nullable = false, length = 45)
 	public String getCategoryName() {

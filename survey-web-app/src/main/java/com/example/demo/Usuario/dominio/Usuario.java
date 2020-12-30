@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "usuario", catalog = "encuesta")
 
 public class Usuario implements java.io.Serializable {
-	
+
 	@JsonView(Views.User.class)
 	private int usuarioId;
 	@JsonView(Views.User.class)
@@ -74,9 +74,9 @@ public class Usuario implements java.io.Serializable {
 		this.username = username;
 	}
 
-	public Usuario(int usuarioId, String username, String birthDate, String firstName, String gender,
-			String initials, String lastName, String middleName, String title, String password, Byte enabled,
-			String email, Set<Surveyparticipant> surveyparticipants, Set<Rol> rols) {
+	public Usuario(int usuarioId, String username, String birthDate, String firstName, String gender, String initials,
+			String lastName, String middleName, String title, String password, Byte enabled, String email,
+			Set<Surveyparticipant> surveyparticipants, Set<Rol> rols) {
 		this.usuarioId = usuarioId;
 		this.username = username;
 		this.birthDate = birthDate;
@@ -223,7 +223,7 @@ public class Usuario implements java.io.Serializable {
 	@JoinTable(name = "usuario_has_rol", catalog = "encuesta", joinColumns = {
 			@JoinColumn(name = "Usuario_UsuarioID", nullable = false, updatable = false) }, inverseJoinColumns = {
 					@JoinColumn(name = "rol_RolID", nullable = false, updatable = false) })
-	
+
 	public Set<Rol> getRols() {
 		return this.rols;
 	}

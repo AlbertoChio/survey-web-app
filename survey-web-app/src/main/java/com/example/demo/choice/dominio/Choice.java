@@ -26,12 +26,12 @@ public class Choice implements java.io.Serializable {
 
 	@JsonView(Views.User.class)
 	private int choiceId;
-	
+
 	private Question question;
-	
+
 	@JsonView(Views.User.class)
 	private String choiceText;
-	
+
 	@JsonView(Views.User.class)
 	private String choiceValue;
 

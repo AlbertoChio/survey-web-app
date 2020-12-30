@@ -35,10 +35,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "application", catalog = "encuesta")
 public class Application implements java.io.Serializable {
-	
+
 	@JsonView(Views.User.class)
 	private int idapplication;
-	
+
 	private Surveyparticipant surveyparticipant;
 	@JsonView(Views.User.class)
 	private Set<Segmentationitem> segmentationitems = new HashSet<Segmentationitem>(0);
@@ -71,7 +71,8 @@ public class Application implements java.io.Serializable {
 	public void setIdapplication(int idapplication) {
 		this.idapplication = idapplication;
 	}
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "surveyparticipant_SurveyparticipantID", nullable = false)
 	public Surveyparticipant getSurveyparticipant() {
@@ -94,7 +95,7 @@ public class Application implements java.io.Serializable {
 		this.segmentationitems = segmentationitems;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "application",cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "application", cascade = CascadeType.ALL)
 	public Set<ApplicationHasQuestion> getApplicationHasQuestions() {
 		return this.applicationHasQuestions;
 	}
