@@ -15,6 +15,7 @@ INSERT INTO `encuesta`.`survey` (`SurveyName`,`SurveyActive`,`AllowMultipleAppli
 INSERT INTO `encuesta`.`category` (`CategoryName`, `survey_SurveyID`) VALUES ('cat1', '1');
 
 INSERT INTO `encuesta`.`surveyparticipant` (`survey_SurveyID`, `Usuario_UsuarioID`) VALUES ('1', '2');
+INSERT INTO `encuesta`.`surveyparticipant` (`survey_SurveyID`, `Usuario_UsuarioID`) VALUES ('1', '1');
 
 INSERT INTO `encuesta`.`questiontype` (`QuestionTypeCode`, `QuestionTypeHasChoices`, `QuestionTypeName`) VALUES ('RANK', 1, 'ranking');
 

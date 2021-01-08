@@ -58,4 +58,12 @@ public class ApplicationChartsDto {
 		this.applicationHasQuestions = applicationHasQuestions;
 	}
 
+	public Set<SegmentationitemChartsDto> getSegmentationitems() {
+		return segmentationitems;
+	}
+
+	public void setSegmentationitems(Set<SegmentationitemChartsDto> segmentationitems) {
+		this.segmentationitems = segmentationitems;
+	}
+
 }
