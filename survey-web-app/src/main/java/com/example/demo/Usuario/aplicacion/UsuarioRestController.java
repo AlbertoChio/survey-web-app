@@ -26,7 +26,7 @@ import com.example.demo.rol.dominio.Rol;
 import com.example.demo.util.dominio.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 
-@CrossOrigin(origins = { "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:4200","*" })
 @RestController
 @RequestMapping("/api")
 public class UsuarioRestController {
