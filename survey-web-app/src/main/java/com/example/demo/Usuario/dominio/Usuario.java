@@ -18,8 +18,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.example.demo.category.domino.Category;
 import com.example.demo.rol.dominio.Rol;
 import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
+import com.example.demo.surveyparticipant.dominio.dtos.SurveyparticipantNewSurveyDto;
 import com.example.demo.util.dominio.Views;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -37,33 +40,32 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 public class Usuario implements java.io.Serializable {
 
-	@JsonView(Views.User.class)
 	private int usuarioId;
-	@JsonView(Views.User.class)
+
 	private String username;
-	@JsonView(Views.User.class)
+
 	private String birthDate;
-	@JsonView(Views.User.class)
+
 	private String firstName;
-	@JsonView(Views.User.class)
+
 	private String gender;
-	@JsonView(Views.User.class)
+
 	private String initials;
-	@JsonView(Views.User.class)
+
 	private String lastName;
-	@JsonView(Views.User.class)
+
 	private String middleName;
-	@JsonView(Views.User.class)
+
 	private String title;
-	@JsonView(Views.User.class)
+
 	private String password;
-	@JsonView(Views.User.class)
+
 	private Byte enabled;
-	@JsonView(Views.User.class)
+
 	private String email;
-	@JsonView(Views.User.class)
+
 	private Set<Surveyparticipant> surveyparticipants = new HashSet<Surveyparticipant>(0);
-	@JsonView(Views.User.class)
+
 	private Set<Rol> rols = new HashSet<Rol>(0);
 
 	public Usuario() {
@@ -98,6 +100,14 @@ public class Usuario implements java.io.Serializable {
 		this.username = nombreUsuario;
 		this.email = email;
 		this.password = encode;
+	}
+
+	public Usuario(SurveyparticipantNewSurveyDto temp) {
+		this.username = temp.getUsuario();
+	}
+
+	public Usuario(String usuario) {
+		this.username= usuario;
 	}
 
 	@Id

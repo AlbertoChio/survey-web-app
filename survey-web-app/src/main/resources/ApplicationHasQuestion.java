@@ -1,12 +1,12 @@
 // default package
-// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
+// Generated 19 ene 2021 3:30:01 by Hibernate Tools 5.1.10.Final
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "application_has_question", catalog = "encuesta")
 public class ApplicationHasQuestion implements java.io.Serializable {
 
-	private ApplicationHasQuestionId id;
+	private Integer id;
 	private Application application;
 	private Question question;
 	private String applicationHasQuestionvalue;
@@ -26,35 +26,31 @@ public class ApplicationHasQuestion implements java.io.Serializable {
 	public ApplicationHasQuestion() {
 	}
 
-	public ApplicationHasQuestion(ApplicationHasQuestionId id, Application application, Question question) {
-		this.id = id;
+	public ApplicationHasQuestion(Application application, Question question) {
 		this.application = application;
 		this.question = question;
 	}
 
-	public ApplicationHasQuestion(ApplicationHasQuestionId id, Application application, Question question,
-			String applicationHasQuestionvalue) {
-		this.id = id;
+	public ApplicationHasQuestion(Application application, Question question, String applicationHasQuestionvalue) {
 		this.application = application;
 		this.question = question;
 		this.applicationHasQuestionvalue = applicationHasQuestionvalue;
 	}
 
-	@EmbeddedId
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
 
-	@AttributeOverrides({
-			@AttributeOverride(name = "applicationIdapplication", column = @Column(name = "application_idapplication", nullable = false)),
-			@AttributeOverride(name = "questionQuestionId", column = @Column(name = "question_QuestionID", nullable = false)) })
-	public ApplicationHasQuestionId getId() {
+	@Column(name = "id", unique = true, nullable = false)
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(ApplicationHasQuestionId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "application_idapplication", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "application_idapplication", nullable = false)
 	public Application getApplication() {
 		return this.application;
 	}
@@ -64,7 +60,7 @@ public class ApplicationHasQuestion implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "question_QuestionID", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "question_QuestionID", nullable = false)
 	public Question getQuestion() {
 		return this.question;
 	}

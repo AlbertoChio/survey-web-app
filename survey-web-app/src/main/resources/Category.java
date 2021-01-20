@@ -1,5 +1,5 @@
 // default package
-// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
+// Generated 19 ene 2021 3:30:01 by Hibernate Tools 5.1.10.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Table(name = "category", catalog = "encuesta")
 public class Category implements java.io.Serializable {
 
-	private Integer categoryId;
+	private Long categoryId;
 	private Survey survey;
 	private String categoryName;
 	private Set<Question> questions = new HashSet<Question>(0);
@@ -44,11 +44,11 @@ public class Category implements java.io.Serializable {
 	@GeneratedValue(strategy = IDENTITY)
 
 	@Column(name = "CategoryID", unique = true, nullable = false)
-	public Integer getCategoryId() {
+	public Long getCategoryId() {
 		return this.categoryId;
 	}
 
-	public void setCategoryId(Integer categoryId) {
+	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
 	}
 

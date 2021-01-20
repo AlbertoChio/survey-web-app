@@ -5,12 +5,17 @@ package com.example.demo.surveyparticipantanswer.dominio;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import com.example.demo.question.dominio.Question;
@@ -26,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 public class ApplicationHasQuestion implements java.io.Serializable {
 
 	@JsonView(Views.User.class)
-	private ApplicationHasQuestionId id;
+	private int applicationhasquestionid;
 	private Application application;
 	@JsonView(Views.User.class)
 	private Question question;
@@ -36,36 +41,33 @@ public class ApplicationHasQuestion implements java.io.Serializable {
 	public ApplicationHasQuestion() {
 	}
 
-	public ApplicationHasQuestion(ApplicationHasQuestionId id, Application application, Question question) {
-		this.id = id;
+	public ApplicationHasQuestion(int applicationhasquestionid, Application application, Question question) {
+		this.applicationhasquestionid = applicationhasquestionid;
 		this.application = application;
 		this.question = question;
 	}
 
-	public ApplicationHasQuestion(ApplicationHasQuestionId id, Application application, Question question,
+	public ApplicationHasQuestion(int applicationhasquestionid, Application application, Question question,
 			String applicationHasQuestionvalue) {
-		this.id = id;
+		this.applicationhasquestionid = applicationhasquestionid;
 		this.application = application;
 		this.question = question;
 		this.applicationHasQuestionvalue = applicationHasQuestionvalue;
 	}
 
-	@EmbeddedId
-
-	@AttributeOverrides({
-			@AttributeOverride(name = "idapplicationHasQuestion", column = @Column(name = "idapplication_has_question", nullable = false)),
-			@AttributeOverride(name = "questionQuestionId", column = @Column(name = "question_QuestionID", nullable = false)),
-			@AttributeOverride(name = "applicationIdapplication", column = @Column(name = "application_idapplication", nullable = false)) })
-	public ApplicationHasQuestionId getId() {
-		return this.id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "applicationhasquestionid", unique = true, nullable = false)
+	public int getId() {
+		return this.applicationhasquestionid;
 	}
 
-	public void setId(ApplicationHasQuestionId id) {
-		this.id = id;
+	public void setId(int applicationhasquestionid) {
+		this.applicationhasquestionid = applicationhasquestionid;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "application_idapplication", nullable = false, insertable = false, updatable = false)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "application_idapplication", insertable = false, updatable = false, nullable = false)
 	public Application getApplication() {
 		return this.application;
 	}
@@ -74,8 +76,8 @@ public class ApplicationHasQuestion implements java.io.Serializable {
 		this.application = application;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "question_QuestionID", nullable = false, insertable = false, updatable = false)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "question_QuestionID", nullable = false)
 	public Question getQuestion() {
 		return this.question;
 	}

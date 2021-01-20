@@ -1,5 +1,5 @@
 // default package
-// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
+// Generated 19 ene 2021 3:30:01 by Hibernate Tools 5.1.10.Final
 
 
 import X.processlistId;

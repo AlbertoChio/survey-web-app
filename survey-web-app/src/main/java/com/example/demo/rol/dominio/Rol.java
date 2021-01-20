@@ -34,9 +34,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class Rol implements java.io.Serializable {
 
 	private int rolId;
-	@JsonView(Views.User.class)
+
 	private String rolNombre;
-	@JsonView(Views.InfiniteRecursion.class)
+
 	private Set<Usuario> usuarios = new HashSet<Usuario>(0);
 
 	public Rol() {

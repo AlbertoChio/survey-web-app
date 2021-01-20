@@ -37,7 +37,10 @@ public class ApplicationServiceImpl implements IApplicationService {
 
 	@Override
 	public List<NewAnswerDto> aplicationToNewAnswerDto(List<Application> applications) {
-		List<NewAnswerDto> newAnswerDto = applications.stream().map(temp -> {NewAnswerDto p = new NewAnswerDto(temp);return p;}).collect(Collectors.toList());
+		List<NewAnswerDto> newAnswerDto = applications.stream().map(temp -> {
+			NewAnswerDto p = new NewAnswerDto(temp);
+			return p;
+		}).collect(Collectors.toList());
 		return newAnswerDto;
 	}
 

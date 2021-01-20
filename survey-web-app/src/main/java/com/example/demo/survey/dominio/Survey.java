@@ -13,9 +13,12 @@ import java.util.Calendar;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,9 +33,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.example.demo.category.domino.Category;
+import com.example.demo.category.domino.dtos.CategoryNewSurveyDto;
 import com.example.demo.question.dominio.Question;
+import com.example.demo.survey.dominio.dtos.SegmentationNewSurveyDto;
+import com.example.demo.survey.dominio.dtos.SurveyListDto;
+import com.example.demo.survey.dominio.dtos.SurveyNewSurveyDto;
 import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
+import com.example.demo.surveyparticipant.dominio.dtos.SurveyparticipantNewSurveyDto;
 import com.example.demo.util.dominio.Views;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -47,45 +58,56 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Entity
 @Table(name = "survey", catalog = "encuesta")
 public class Survey implements java.io.Serializable {
-	@JsonView(Views.Admin.class)
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "SurveyID", unique = true, nullable = false)
 	private int surveyId;
 
-	@JsonView(Views.User.class)
+	@Column(name = "SurveyDescription")
 	private String surveyDescription;
 
-	@JsonView(Views.User.class)
+	@Column(name = "SurveyExitMessage")
 	private String surveyExitMessage;
 
-	@JsonView(Views.User.class)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "SurveyExpirationDate", length = 26)
 	private Date surveyExpirationDate;
 
-	@JsonView(Views.User.class)
+	@Column(name = "SurveyName", length = 40, unique = true, nullable = false)
 	private String surveyName;
 
-	@JsonView(Views.User.class)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "SurveyPublicationDate", length = 26)
 	private Date surveyPublicationDate;
 
-	@JsonView(Views.User.class)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "SurveyStartDate", length = 26)
 	private Date surveyStartDate;
 
-	@JsonView(Views.User.class)
+	@Column(name = "SurveyWelcomeMessage")
 	private String surveyWelcomeMessage;
 
-	@JsonView(Views.User.class)
+	@Column(name = "AllowMultipleApplications", nullable = false)
 	private boolean allowMultipleApplications;
 
-	@JsonView(Views.User.class)
+	@Column(name = "SurveyActive", nullable = false)
 	private boolean surveyActive;
 
-	@JsonView(Views.User.class)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "survey_SurveyID", nullable = false)
 	private Set<Category> categories = new HashSet<Category>(0);
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "survey_SurveyID", nullable=false)
 	private Set<Surveyparticipant> surveyparticipants = new HashSet<Surveyparticipant>(0);
 
-	@JsonView(Views.User.class)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "survey_SurveyID", nullable=false)
 	private Set<Segmentation> segmentations = new HashSet<Segmentation>(0);
 
 	public Survey() {
+		super();
 	}
 
 	public Survey(boolean surveyActive, String surveyName, boolean allowMultipleApplications) {
@@ -112,9 +134,39 @@ public class Survey implements java.io.Serializable {
 		this.segmentations = segmentations;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "SurveyID", unique = true, nullable = false)
+	public Survey(String surveyDescription, Date surveyExpirationDate, String surveyName, Date surveyStartDate,
+			boolean surveyActive, Set<Category> categories, Set<Surveyparticipant> surveyparticipants,
+			Set<Segmentation> segmentations) {
+		super();
+		this.surveyDescription = surveyDescription;
+		this.surveyExpirationDate = surveyExpirationDate;
+		this.surveyName = surveyName;
+		this.surveyStartDate = surveyStartDate;
+		this.surveyActive = surveyActive;
+		this.categories = categories;
+		this.surveyparticipants = surveyparticipants;
+		this.segmentations = segmentations;
+	}
+
+	public Survey(SurveyNewSurveyDto surveyNewSurveyDto) {
+		this.surveyActive = true;
+		this.allowMultipleApplications = true;
+		this.surveyName = surveyNewSurveyDto.getSurveyName();
+		this.surveyDescription = surveyNewSurveyDto.getSurveyDescription();
+		this.surveyExpirationDate = surveyNewSurveyDto.getSurveyExpirationDate();
+		this.surveyName = surveyNewSurveyDto.getSurveyName();
+		this.surveyStartDate = surveyNewSurveyDto.getSurveyStartDate();
+		this.categories = surveyNewSurveyDto.getCategories().stream().map(temp -> {
+			Category p = new Category(temp);
+			return p;
+		}).collect(Collectors.toSet());
+		this.segmentations =
+				  surveyNewSurveyDto.getSegmentations().stream().map(temp -> {
+				  Segmentation p = new Segmentation(temp); return p;
+				  }).collect(Collectors.toSet());
+
+	}
+
 	public int getSurveyId() {
 		return this.surveyId;
 	}
@@ -123,7 +175,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyId = surveyId;
 	}
 
-	@Column(name = "SurveyDescription")
 	public String getSurveyDescription() {
 		return this.surveyDescription;
 	}
@@ -132,7 +183,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyDescription = surveyDescription;
 	}
 
-	@Column(name = "SurveyExitMessage")
 	public String getSurveyExitMessage() {
 		return this.surveyExitMessage;
 	}
@@ -141,8 +191,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyExitMessage = surveyExitMessage;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "SurveyExpirationDate", length = 26)
 	public Date getSurveyExpirationDate() {
 		return this.surveyExpirationDate;
 	}
@@ -151,7 +199,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyExpirationDate = surveyExpirationDate;
 	}
 
-	@Column(name = "SurveyName", length = 40, unique = true, nullable = false)
 	public String getSurveyName() {
 		return this.surveyName;
 	}
@@ -160,8 +207,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyName = surveyName;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "SurveyPublicationDate", length = 26)
 	public Date getSurveyPublicationDate() {
 		return this.surveyPublicationDate;
 	}
@@ -170,8 +215,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyPublicationDate = surveyPublicationDate;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "SurveyStartDate", length = 26)
 	public Date getSurveyStartDate() {
 		return this.surveyStartDate;
 	}
@@ -180,7 +223,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyStartDate = surveyStartDate;
 	}
 
-	@Column(name = "SurveyWelcomeMessage")
 	public String getSurveyWelcomeMessage() {
 		return this.surveyWelcomeMessage;
 	}
@@ -189,7 +231,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
 	}
 
-	@Column(name = "AllowMultipleApplications", nullable = false)
 	public boolean getAllowMultipleApplications() {
 		return this.allowMultipleApplications;
 	}
@@ -198,7 +239,6 @@ public class Survey implements java.io.Serializable {
 		this.allowMultipleApplications = allowMultipleApplications;
 	}
 
-	@Column(name = "SurveyActive", nullable = false)
 	public boolean getSurveyActive() {
 		return this.surveyActive;
 	}
@@ -207,7 +247,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyActive = surveyActive;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
 	public Set<Category> getCategories() {
 		return this.categories;
 	}
@@ -216,7 +255,6 @@ public class Survey implements java.io.Serializable {
 		this.categories = categories;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
 	public Set<Surveyparticipant> getSurveyparticipants() {
 		return this.surveyparticipants;
 	}
@@ -225,10 +263,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyparticipants = surveyparticipants;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "survey_has_segmentation", catalog = "encuesta", joinColumns = {
-			@JoinColumn(name = "survey_SurveyID", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "segmentation_segmentationID", nullable = false, updatable = false) })
 	public Set<Segmentation> getSegmentations() {
 		return this.segmentations;
 	}
@@ -258,4 +292,5 @@ public class Survey implements java.io.Serializable {
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar.getTime();
 	}
+
 }

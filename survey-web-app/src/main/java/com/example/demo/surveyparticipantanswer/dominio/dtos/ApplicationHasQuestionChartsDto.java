@@ -9,7 +9,7 @@ import com.example.demo.util.dominio.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class ApplicationHasQuestionChartsDto {
-	
+
 	private QuestionChartsDto question;
 
 	private String applicationHasQuestionvalue;
@@ -30,11 +30,9 @@ public class ApplicationHasQuestionChartsDto {
 		return question;
 	}
 
-
 	public void setQuestion(QuestionChartsDto question) {
 		this.question = question;
 	}
-
 
 	public String getApplicationHasQuestionvalue() {
 		return applicationHasQuestionvalue;

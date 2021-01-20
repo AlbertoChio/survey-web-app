@@ -5,6 +5,9 @@ package com.example.demo.category.domino;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.example.demo.category.domino.dtos.CategoryNewSurveyDto;
 import com.example.demo.question.dominio.Question;
 import com.example.demo.survey.dominio.Survey;
 import com.example.demo.util.dominio.Views;
@@ -31,18 +35,24 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "category", catalog = "encuesta")
 public class Category implements java.io.Serializable {
 
-	@JsonView(Views.User.class)
-	private int categoryId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "CategoryID", nullable = false)
+	private Long categoryId;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "survey_SurveyID", insertable = false, updatable = false, nullable = false)
 	private Survey survey;
 
-	@JsonView(Views.User.class)
+	@Column(name = "CategoryName", nullable = false, length = 45)
 	private String categoryName;
 
-	@JsonView(Views.User.class)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "category_CategoryID", nullable = false)
 	private Set<Question> questions = new HashSet<Question>(0);
 
 	public Category() {
+		super();
 	}
 
 	public Category(Survey survey, String categoryName) {
@@ -56,19 +66,23 @@ public class Category implements java.io.Serializable {
 		this.questions = questions;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "CategoryID", unique = true, nullable = false)
-	public int getCategoryId() {
+	public Category(CategoryNewSurveyDto temp) {
+		this.categoryName = temp.getCategoryName();
+		this.questions = temp.getQuestions().stream().map(tempp -> {
+			Question p = new Question(tempp);
+			return p;
+		}).collect(Collectors.toSet());
+
+	}
+
+	public Long getCategoryId() {
 		return this.categoryId;
 	}
 
-	public void setCategoryId(int categoryId) {
+	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "survey_SurveyID", nullable = false)
 	public Survey getSurvey() {
 		return this.survey;
 	}
@@ -77,7 +91,6 @@ public class Category implements java.io.Serializable {
 		this.survey = survey;
 	}
 
-	@Column(name = "CategoryName", nullable = false, length = 45)
 	public String getCategoryName() {
 		return this.categoryName;
 	}
@@ -86,7 +99,6 @@ public class Category implements java.io.Serializable {
 		this.categoryName = categoryName;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
 	public Set<Question> getQuestions() {
 		return this.questions;
 	}

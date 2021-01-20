@@ -95,7 +95,8 @@ public class Application implements java.io.Serializable {
 		this.segmentationitems = segmentationitems;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "application", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "application_idapplication", nullable = false)
 	public Set<ApplicationHasQuestion> getApplicationHasQuestions() {
 		return this.applicationHasQuestions;
 	}

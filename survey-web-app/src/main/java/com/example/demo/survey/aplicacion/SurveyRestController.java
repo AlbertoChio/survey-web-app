@@ -3,17 +3,23 @@ package com.example.demo.survey.aplicacion;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +35,10 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.example.demo.Usuario.dominio.Usuario;
 import com.example.demo.Usuario.infraestructura.IUsuarioService;
 import com.example.demo.rol.dominio.RolNombre;
+import com.example.demo.security.dominio.dtos.NuevoUsuario;
 import com.example.demo.survey.dominio.Survey;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
+import com.example.demo.survey.dominio.dtos.SurveyNewSurveyDto;
 import com.example.demo.survey.infraestructura.ISurveyService;
 import com.example.demo.util.dominio.Mensaje;
 import com.example.demo.util.dominio.Views;
@@ -50,14 +58,6 @@ public class SurveyRestController {
 	private ISurveyService surveyService;
 	private final Logger log = LoggerFactory.getLogger(SurveyRestController.class);
 
-	@GetMapping("/encuestasss")
-	@ResponseStatus(HttpStatus.OK)
-	public List<Survey> indexx() {
-		List<Survey> surveys = surveyService.findAll();
-
-		return surveys;
-	}
-
 	@GetMapping("/encuestass")
 	@ResponseStatus(HttpStatus.OK)
 	public List<SurveyListDto> index() {
@@ -66,65 +66,38 @@ public class SurveyRestController {
 		return surveysListDto;
 	}
 
-	@GetMapping("/encuesta")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<MappingJacksonValue> listmysurveyparticiants(Authentication authentication) {
-		List<Survey> surveys = surveyService.findBySurveyparticipantsUsuarioUsername(authentication.getName());
-		List<SurveyListDto> surveysListDto = surveyService.listSurveyListDto(surveys);
-
-		MappingJacksonValue jacksonValue = new MappingJacksonValue(surveysListDto);
-
-		if (authentication.getAuthorities().contains(new SimpleGrantedAuthority(RolNombre.ROLE_ADMIN.toString()))) {
-			log.info("Admin");
-			jacksonValue.setSerializationView(Views.Admin.class);
-		} else if (authentication.getAuthorities()
-				.contains(new SimpleGrantedAuthority(RolNombre.ROLE_USER.toString()))) {
-			log.info("user");
-			jacksonValue.setSerializationView(Views.User.class);
-		} else {
-			log.info(authentication.getAuthorities().toString());
-		}
-
-		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
-	}
-
 	@GetMapping("/encuesta/answer/{surveyname}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> surveyuserParticipantRequestSurvey(@PathVariable("surveyname") String surveyname,
 			Authentication authentication) {
 		if (surveyService.canUserStartSurvey(authentication.getName(), surveyname)) {
-			MappingJacksonValue jacksonValue = new MappingJacksonValue(surveyService.findBySurveyName(surveyname));
-			jacksonValue.setSerializationView(Views.User.class);
+			Survey survey = surveyService.findBySurveyName(surveyname);
+			MappingJacksonValue jacksonValue = new MappingJacksonValue(
+					surveyService.SurveyToSurveyNewAnswerDto(surveyService.findBySurveyName(surveyname)));
 			return new ResponseEntity(jacksonValue, HttpStatus.OK);
 		}
-
 		return new ResponseEntity(
 				new Mensaje("Encuesta expirada, inactiva o ya has excedido el número de aplicaciones permitidas"),
 				HttpStatus.BAD_REQUEST);
 	}
 
-	@GetMapping("/encuestaca/{role}")
-	public ResponseEntity<MappingJacksonValue> getEmployee(@PathVariable String role) {
-		List<Survey> surveys = surveyService.findAll();
-		MappingJacksonValue jacksonValue = new MappingJacksonValue(surveys);
-
-		if (role.equals("MANAGER")) {
-			jacksonValue.setSerializationView(Views.Admin.class);
-		} else if (role.equals("EMPLOYEE")) {
-			jacksonValue.setSerializationView(Views.User.class);
-		}
-
-		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
-	}
-
 	@GetMapping("/encuesta/chart/{surveyname}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> surveyuserRequestSurveyChartsDto(@PathVariable("surveyname") String surveyname) {
-
 		MappingJacksonValue jacksonValue = new MappingJacksonValue(
 				surveyService.SurveyToSurveyChartDto(surveyService.findBySurveyName(surveyname)));
 		return new ResponseEntity(jacksonValue, HttpStatus.OK);
 
+	}
+
+	@PostMapping("/encuesta/new-encuesta")
+	public ResponseEntity<?> surveyadminsubmitSurveyNewSurveyDto(@Valid @RequestBody SurveyNewSurveyDto surveydto,
+			BindingResult result) {
+		if (result.hasErrors())
+			return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
+		Survey survey = surveyService.NewSurveyRecord(surveydto);
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(survey);
+		return new ResponseEntity(jacksonValue, HttpStatus.OK);
 	}
 
 }

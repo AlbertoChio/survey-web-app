@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class NewAnswerDto {
 
-	@JsonView(Views.User.class)
 	private Set<Segmentationitem> segmentationitems = new HashSet<Segmentationitem>(0);
-	@JsonView(Views.User.class)
+
 	private Set<ApplicationHasQuestion> applicationHasQuestions = new HashSet<ApplicationHasQuestion>(0);
 
 	public NewAnswerDto() {

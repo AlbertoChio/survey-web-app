@@ -60,24 +60,7 @@ public class SurveyParticipantRestController {
 
 	private final Logger log = LoggerFactory.getLogger(SurveyParticipantRestController.class);
 
-	@GetMapping("/participantes")
-	@ResponseStatus(HttpStatus.OK)
-	public MappingJacksonValue indexparticipant() {
-		List<Surveyparticipant> surveys = surveyParticipantService.findAll();
-		MappingJacksonValue jacksonValue = new MappingJacksonValue(surveys);
-		jacksonValue.setSerializationView(Views.User.class);
-
-		return jacksonValue;
-	}
-
-	@GetMapping("/applicaciones")
-	@ResponseStatus(HttpStatus.OK)
-	public List<Application> listapplications() {
-		List<Application> applications = applicationService.findAll();
-		return applications;
-	}
-
-	@GetMapping("/aplicaciones")
+	@GetMapping("/applications")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<MappingJacksonValue> listmysurveyparticiants(Authentication authentication) {
 		List<Surveyparticipant> surveyparticipants = surveyParticipantService
@@ -89,18 +72,6 @@ public class SurveyParticipantRestController {
 		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
 	}
 
-	@GetMapping("/applications")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<MappingJacksonValue> listapplicationsdto() {
-		List<Application> applications = applicationService.findAll();
-		List<NewAnswerDto> newAnswerDto = applicationService.aplicationToNewAnswerDto(applications);
-		MappingJacksonValue jacksonValue = new MappingJacksonValue(applications);
-		jacksonValue.setSerializationView(Views.User.class);
-
-		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
-
-	}
-
 	@PostMapping("/create/{surveyname}")
 	public ResponseEntity<?> saveapplication(@PathVariable("surveyname") String surveyname,
 			@RequestBody Application application, Authentication authentication) {
@@ -109,42 +80,8 @@ public class SurveyParticipantRestController {
 			Surveyparticipant surveyparticipant = surveyParticipantService
 					.findByUsuarioUsernameAndSurveySurveyName(authentication.getName(), surveyname);
 			application.setSurveyparticipant(surveyparticipant);
-
-			Set<ApplicationHasQuestion> applicationHasQuestionsHolder = new HashSet<ApplicationHasQuestion>(0);
-			applicationHasQuestionsHolder = application.getApplicationHasQuestions();
-
-			application.setApplicationHasQuestions(null);
-
-			int applicationidHolder = (applicationService.save(application).getIdapplication());
-
-			applicationHasQuestionsHolder = (Set<ApplicationHasQuestion>) applicationHasQuestionsHolder.stream()
-					.map(temp -> {
-						ApplicationHasQuestionId applicationHasQuestionId = new ApplicationHasQuestionId();
-						applicationHasQuestionId.setApplicationIdapplication(applicationidHolder);
-						applicationHasQuestionId.setQuestionQuestionId(temp.getId().getQuestionQuestionId());
-						temp.setId(applicationHasQuestionId);
-						return temp;
-					}).collect(Collectors.toSet());
-
-			application.setIdapplication(applicationidHolder);
-			application.setApplicationHasQuestions(applicationHasQuestionsHolder);
-			/*
-			 *
-			 * ApplicationHasQuestionId applicationHasQuestionId= new
-			 * ApplicationHasQuestionId(); application.setApplicationHasQuestions(new
-			 * HashSet<ApplicationHasQuestion>(0));
-			 * applicationHasQuestionId.setApplicationIdapplication((applicationService.save
-			 * (application).getIdapplication())); applicationHasQuestions =
-			 * (Set<ApplicationHasQuestion>) applicationHasQuestions.stream().map(temp -> {
-			 * temp.setId(applicationHasQuestionId); return temp;
-			 * }).collect(Collectors.toSet());
-			 * 
-			 */
-
-			// application.setApplicationHasQuestions(applicationHasQuestions);
-			// applicationquestions.
-			MappingJacksonValue jacksonValue = new MappingJacksonValue(applicationService.save(application));
-			jacksonValue.setSerializationView(Views.User.class);
+			MappingJacksonValue jacksonValue = new MappingJacksonValue(
+					applicationService.save(application).getIdapplication());
 			return new ResponseEntity<Object>((jacksonValue), HttpStatus.OK);
 		}
 		return new ResponseEntity(
@@ -157,42 +94,8 @@ public class SurveyParticipantRestController {
 		Surveyparticipant surveyparticipant = surveyParticipantService
 				.findByUsuarioUsernameAndSurveySurveyName("useruser", "encuesta1");
 		application.setSurveyparticipant(surveyparticipant);
-
-		Set<ApplicationHasQuestion> applicationHasQuestionsHolder = new HashSet<ApplicationHasQuestion>(0);
-		applicationHasQuestionsHolder = application.getApplicationHasQuestions();
-
-		application.setApplicationHasQuestions(null);
-
-		int applicationidHolder = (applicationService.save(application).getIdapplication());
-
-		applicationHasQuestionsHolder = (Set<ApplicationHasQuestion>) applicationHasQuestionsHolder.stream()
-				.map(temp -> {
-					ApplicationHasQuestionId applicationHasQuestionId = new ApplicationHasQuestionId();
-					applicationHasQuestionId.setApplicationIdapplication(applicationidHolder);
-					applicationHasQuestionId.setQuestionQuestionId(temp.getId().getQuestionQuestionId());
-					temp.setId(applicationHasQuestionId);
-					return temp;
-				}).collect(Collectors.toSet());
-
-		application.setIdapplication(applicationidHolder);
-		application.setApplicationHasQuestions(applicationHasQuestionsHolder);
-		/*
-		 *
-		 * ApplicationHasQuestionId applicationHasQuestionId= new
-		 * ApplicationHasQuestionId(); application.setApplicationHasQuestions(new
-		 * HashSet<ApplicationHasQuestion>(0));
-		 * applicationHasQuestionId.setApplicationIdapplication((applicationService.save
-		 * (application).getIdapplication())); applicationHasQuestions =
-		 * (Set<ApplicationHasQuestion>) applicationHasQuestions.stream().map(temp -> {
-		 * temp.setId(applicationHasQuestionId); return temp;
-		 * }).collect(Collectors.toSet());
-		 * 
-		 */
-
-		// application.setApplicationHasQuestions(applicationHasQuestions);
-		// applicationquestions.
-		MappingJacksonValue jacksonValue = new MappingJacksonValue(applicationService.save(application));
-		jacksonValue.setSerializationView(Views.User.class);
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(
+				applicationService.save(application).getIdapplication());
 		return new ResponseEntity<Object>((jacksonValue), HttpStatus.OK);
 	}
 }

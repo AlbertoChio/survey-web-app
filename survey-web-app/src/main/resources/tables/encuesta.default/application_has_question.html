@@ -61,12 +61,12 @@
 			<tbody>
 					<tr>
 						<td>
-							<a href="#column_detail_application_idapplication">
-								application_idapplication
+							<a href="#column_detail_id">
+								id
 							</a>
 						</td>
 						<td>
-							N/D
+							integer
 						</td>
 						<td>
 							255
@@ -79,6 +79,31 @@
 						</td>
 						<td>
 							false
+						</td>
+						<td>
+							true
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="#column_detail_application_has_questionvalue">
+								application_has_questionvalue
+							</a>
+						</td>
+						<td>
+							varchar(45)
+						</td>
+						<td>
+							45
+						</td>
+						<td>
+							19
+						</td>
+						<td>
+							2
+						</td>
+						<td>
+							true
 						</td>
 						<td>
 							false
@@ -111,15 +136,15 @@
 					</tr>
 					<tr>
 						<td>
-							<a href="#column_detail_application_has_questionvalue">
-								application_has_questionvalue
+							<a href="#column_detail_application_idapplication">
+								application_idapplication
 							</a>
 						</td>
 						<td>
-							varchar(45)
+							N/D
 						</td>
 						<td>
-							45
+							255
 						</td>
 						<td>
 							19
@@ -128,7 +153,7 @@
 							2
 						</td>
 						<td>
-							true
+							false
 						</td>
 						<td>
 							false
@@ -159,11 +184,8 @@
 								PRIMARY
 						</td>
 						<td>
-								<a href="#column_detail_application_idapplication">
-									application_idapplication
-								</a>
-								<a href="#column_detail_question_QuestionID">
-									question_QuestionID
+								<a href="#column_detail_id">
+									id
 								</a>
 						</td>
 					</tr>
@@ -243,6 +265,16 @@
 				<tbody>
 						<tr>
 							<td>
+								FK5lt16v9dikp6byy7swh6nxwly
+							</td>
+							<td>
+									<a href="#column_detail_application_idapplication">
+										application_idapplication
+									</a>
+							</td>
+						</tr>
+						<tr>
+							<td>
 								FKk0xu8nweg3c5a6h8oc2u8f7tc
 							</td>
 							<td>
@@ -258,11 +290,11 @@
 				Column Detail
 			</p>
 				
-				<h3 id="column_detail_application_idapplication">application_idapplication</h3>
+				<h3 id="column_detail_id">id</h3>
 				
 				<ul>
 					<li>
-						<strong>Type:</strong> N/D
+						<strong>Type:</strong> integer
 					</li>
 					<li>
 						<strong>Length:</strong> 255
@@ -275,6 +307,34 @@
 					</li>
 					<li>
 						<strong>Nullable:</strong> false
+					</li>
+					<li>
+						<strong>Unique:</strong> true
+					</li>
+					<li>
+						<strong>Comment:</strong> 
+					</li>
+				</ul>
+
+
+				<hr/>
+				<h3 id="column_detail_application_has_questionvalue">application_has_questionvalue</h3>
+				
+				<ul>
+					<li>
+						<strong>Type:</strong> varchar(45)
+					</li>
+					<li>
+						<strong>Length:</strong> 45
+					</li>
+					<li>
+						<strong>Precision:</strong> 19
+					</li>
+					<li>
+						<strong>Scale:</strong> 2
+					</li>
+					<li>
+						<strong>Nullable:</strong> true
 					</li>
 					<li>
 						<strong>Unique:</strong> false
@@ -314,14 +374,14 @@
 
 
 				<hr/>
-				<h3 id="column_detail_application_has_questionvalue">application_has_questionvalue</h3>
+				<h3 id="column_detail_application_idapplication">application_idapplication</h3>
 				
 				<ul>
 					<li>
-						<strong>Type:</strong> varchar(45)
+						<strong>Type:</strong> N/D
 					</li>
 					<li>
-						<strong>Length:</strong> 45
+						<strong>Length:</strong> 255
 					</li>
 					<li>
 						<strong>Precision:</strong> 19
@@ -330,7 +390,7 @@
 						<strong>Scale:</strong> 2
 					</li>
 					<li>
-						<strong>Nullable:</strong> true
+						<strong>Nullable:</strong> false
 					</li>
 					<li>
 						<strong>Unique:</strong> false

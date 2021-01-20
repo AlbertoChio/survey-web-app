@@ -44,7 +44,10 @@ public class SurveyParticipantServiceImpl implements ISurveyParticipantService {
 
 	@Override
 	public List<ParticipantSurveyListDto> listParticipantSurveyListDto(List<Surveyparticipant> surveyparticipants) {
-		List<ParticipantSurveyListDto> participantSurveyListDto = surveyparticipants.stream().map(temp -> {ParticipantSurveyListDto p = new ParticipantSurveyListDto(temp);	return p;}).collect(Collectors.toList());
+		List<ParticipantSurveyListDto> participantSurveyListDto = surveyparticipants.stream().map(temp -> {
+			ParticipantSurveyListDto p = new ParticipantSurveyListDto(temp);
+			return p;
+		}).collect(Collectors.toList());
 		return participantSurveyListDto;
 	}
 

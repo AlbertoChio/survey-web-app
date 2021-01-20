@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.demo.Usuario.dominio.Usuario;
+import com.example.demo.Usuario.dominio.dtos.UsuarioNewSurveyDto;
 
 public interface IUsuarioService {
 
@@ -14,4 +15,6 @@ public interface IUsuarioService {
 	public Optional<Usuario> findByUsername(String nombreUsuario);
 
 	public void save(Usuario usuario);
+
+	public List<UsuarioNewSurveyDto> findAllUsuario();
 }

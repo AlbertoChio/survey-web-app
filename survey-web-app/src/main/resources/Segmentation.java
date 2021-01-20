@@ -1,5 +1,5 @@
 // default package
-// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
+// Generated 19 ene 2021 3:30:01 by Hibernate Tools 5.1.10.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,8 +10,7 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -24,20 +23,21 @@ import javax.persistence.UniqueConstraint;
 public class Segmentation implements java.io.Serializable {
 
 	private Integer segmentationId;
+	private Survey survey;
 	private String segmentationName;
-	private Set<Survey> surveys = new HashSet<Survey>(0);
 	private Set<Segmentationitem> segmentationitems = new HashSet<Segmentationitem>(0);
 
 	public Segmentation() {
 	}
 
-	public Segmentation(String segmentationName) {
+	public Segmentation(Survey survey, String segmentationName) {
+		this.survey = survey;
 		this.segmentationName = segmentationName;
 	}
 
-	public Segmentation(String segmentationName, Set<Survey> surveys, Set<Segmentationitem> segmentationitems) {
+	public Segmentation(Survey survey, String segmentationName, Set<Segmentationitem> segmentationitems) {
+		this.survey = survey;
 		this.segmentationName = segmentationName;
-		this.surveys = surveys;
 		this.segmentationitems = segmentationitems;
 	}
 
@@ -53,6 +53,16 @@ public class Segmentation implements java.io.Serializable {
 		this.segmentationId = segmentationId;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "survey_SurveyID", nullable = false)
+	public Survey getSurvey() {
+		return this.survey;
+	}
+
+	public void setSurvey(Survey survey) {
+		this.survey = survey;
+	}
+
 	@Column(name = "segmentationName", unique = true, nullable = false, length = 45)
 	public String getSegmentationName() {
 		return this.segmentationName;
@@ -60,18 +70,6 @@ public class Segmentation implements java.io.Serializable {
 
 	public void setSegmentationName(String segmentationName) {
 		this.segmentationName = segmentationName;
-	}
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "survey_has_segmentation", catalog = "encuesta", joinColumns = {
-			@JoinColumn(name = "segmentation_segmentationID", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "survey_SurveyID", nullable = false, updatable = false) })
-	public Set<Survey> getSurveys() {
-		return this.surveys;
-	}
-
-	public void setSurveys(Set<Survey> surveys) {
-		this.surveys = surveys;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "segmentation")

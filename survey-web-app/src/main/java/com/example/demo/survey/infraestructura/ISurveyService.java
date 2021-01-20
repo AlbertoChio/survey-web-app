@@ -10,6 +10,8 @@ import com.example.demo.Usuario.dominio.Usuario;
 import com.example.demo.survey.dominio.Survey;
 import com.example.demo.survey.dominio.dtos.SurveyChartsDto;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
+import com.example.demo.survey.dominio.dtos.SurveyNewAnswerDto;
+import com.example.demo.survey.dominio.dtos.SurveyNewSurveyDto;
 
 public interface ISurveyService {
 
@@ -28,4 +30,9 @@ public interface ISurveyService {
 	public boolean existsBySurveyparticipantsUsuarioUsernameAndSurveyName(String username, String survey);
 
 	public SurveyChartsDto SurveyToSurveyChartDto(Survey survey);
+
+	public SurveyNewAnswerDto SurveyToSurveyNewAnswerDto(Survey survey);
+
+	public Survey NewSurveyRecord(SurveyNewSurveyDto surveyNewSurveyDto);
+
 }

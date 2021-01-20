@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.Usuario.dominio.dtos.UsuarioNewSurveyDto;
 import com.example.demo.Usuario.dominio.Usuario;
 import com.example.demo.Usuario.infraestructura.IUsuarioService;
 import com.example.demo.rol.dominio.Rol;
@@ -34,22 +35,32 @@ public class UsuarioRestController {
 	@Autowired
 	private IUsuarioService usuarioService;
 
-	@JsonView(Views.User.class)
-	@GetMapping("/usuarios/")
+	/*
+	 *
+	 *
+	 * @JsonView(Views.User.class)
+	 * 
+	 * @GetMapping("/usuarios/")
+	 * 
+	 * @ResponseStatus(HttpStatus.OK) public ResponseEntity<MappingJacksonValue>
+	 * index() { // Set<Rol> rols = new HashSet<Rol>(0); // rols.add(new
+	 * Rol(1,"ROLE_ADMIN")); // Usuario rolUser = new Usuario(); //
+	 * rolUser.setUsername("nuevouser"); // rolUser.setRols(rols); //
+	 * usuarioService.save(rolUser);
+	 * 
+	 * List<Usuario> usuarios = usuarioService.findAll(); MappingJacksonValue
+	 * jacksonValue = new MappingJacksonValue(usuarios);
+	 * jacksonValue.setSerializationView(Views.User.class); return new
+	 * ResponseEntity<>(jacksonValue, HttpStatus.OK); }
+	 * 
+	 */
+
+	@GetMapping("/usuarios")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<MappingJacksonValue> index() {
-		// Set<Rol> rols = new HashSet<Rol>(0);
-		// rols.add(new Rol(1,"ROLE_ADMIN"));
-		// Usuario rolUser = new Usuario();
-		// rolUser.setUsername("nuevouser");
-		// rolUser.setRols(rols);
-		// usuarioService.save(rolUser);
-
-		List<Usuario> usuarios = usuarioService.findAll();
+	public ResponseEntity<MappingJacksonValue> getUsersNewSurveyDto() {
+		List<UsuarioNewSurveyDto> usuarios = usuarioService.findAllUsuario();
 		MappingJacksonValue jacksonValue = new MappingJacksonValue(usuarios);
-		jacksonValue.setSerializationView(Views.User.class);
 		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
-
 	}
 
 }

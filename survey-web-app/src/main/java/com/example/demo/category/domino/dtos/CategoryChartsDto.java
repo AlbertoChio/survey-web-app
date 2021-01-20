@@ -13,13 +13,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class CategoryChartsDto {
 
-	private int categoryId;
+	private Long categoryId;
 
 	private String categoryName;
 
 	private Set<QuestionChartsDto> questions = new HashSet<QuestionChartsDto>(0);
 
-	public CategoryChartsDto(int categoryId, String categoryName) {
+	public CategoryChartsDto(Long categoryId, String categoryName) {
 		super();
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
@@ -35,11 +35,11 @@ public class CategoryChartsDto {
 		}).collect(Collectors.toSet());
 	}
 
-	public int getCategoryId() {
+	public Long getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(int categoryId) {
+	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
 	}
 

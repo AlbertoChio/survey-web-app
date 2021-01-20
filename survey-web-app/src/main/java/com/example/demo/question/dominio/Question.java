@@ -5,6 +5,8 @@ package com.example.demo.question.dominio;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +20,7 @@ import javax.persistence.Table;
 
 import com.example.demo.category.domino.Category;
 import com.example.demo.choice.dominio.Choice;
+import com.example.demo.question.dominio.dtos.QuestionNewSurveyDto;
 import com.example.demo.questiontype.dominio.Questiontype;
 import com.example.demo.survey.dominio.Survey;
 import com.example.demo.surveyparticipantanswer.dominio.ApplicationHasQuestion;
@@ -81,9 +84,15 @@ public class Question implements java.io.Serializable {
 		this.applicationHasQuestions = applicationHasQuestions;
 	}
 
+	public Question(QuestionNewSurveyDto tempp) {
+		this.questionName = tempp.getQuestionName();
+		this.questiontype = new Questiontype("rank");
+		// TODO Auto-generated constructor stub
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "QuestionID", unique = true, nullable = false)
+	@Column(name = "QuestionID", nullable = false)
 	public int getQuestionId() {
 		return this.questionId;
 	}
@@ -93,7 +102,7 @@ public class Question implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_CategoryID", nullable = false)
+	@JoinColumn(name = "category_CategoryID", insertable = false, updatable = false, nullable = false)
 	public Category getCategory() {
 		return this.category;
 	}
@@ -158,7 +167,7 @@ public class Question implements java.io.Serializable {
 		this.choices = choices;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "question")
 	public Set<ApplicationHasQuestion> getApplicationHasQuestions() {
 		return this.applicationHasQuestions;
 	}

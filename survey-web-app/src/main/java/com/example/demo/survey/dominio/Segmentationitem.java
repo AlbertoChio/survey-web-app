@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.example.demo.survey.dominio.dtos.SegmentationitemNewSurveyDto;
 import com.example.demo.surveyparticipant.dominio.Application;
 import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
 import com.example.demo.util.dominio.Views;
@@ -34,17 +35,14 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "segmentationitem", catalog = "encuesta")
 public class Segmentationitem implements java.io.Serializable {
 
-	@JsonView(Views.User.class)
 	private int segmentationitemId;
 
 	private Segmentation segmentation;
 
-	@JsonView(Views.User.class)
 	private String segmentationitemName;
 
-	private Set<Application> applications = new HashSet<Application>(0);
-
 	public Segmentationitem() {
+		super();
 	}
 
 	public Segmentationitem(int segmentationitemId, Segmentation segmentation, String segmentationitemName) {
@@ -53,12 +51,8 @@ public class Segmentationitem implements java.io.Serializable {
 		this.segmentationitemName = segmentationitemName;
 	}
 
-	public Segmentationitem(int segmentationitemId, Segmentation segmentation, String segmentationitemName,
-			Set<Application> applications) {
-		this.segmentationitemId = segmentationitemId;
-		this.segmentation = segmentation;
-		this.segmentationitemName = segmentationitemName;
-		this.applications = applications;
+	public Segmentationitem(SegmentationitemNewSurveyDto tempp) {
+		this.segmentationitemName = tempp.getSegmentationitemName();
 	}
 
 	@Id
@@ -72,9 +66,8 @@ public class Segmentationitem implements java.io.Serializable {
 		this.segmentationitemId = segmentationitemId;
 	}
 
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "segmentation_segmentationID", nullable = false)
+	@JoinColumn(name = "segmentation_segmentationID", insertable = false, updatable = false, nullable = false)
 	public Segmentation getSegmentation() {
 		return this.segmentation;
 	}
@@ -92,15 +85,4 @@ public class Segmentationitem implements java.io.Serializable {
 		this.segmentationitemName = segmentationitemName;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "application_has_segmentationitem", catalog = "encuesta", joinColumns = {
-			@JoinColumn(name = "segmentationitem_segmentationitemID", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "application_idapplication", nullable = false, updatable = false) })
-	public Set<Application> getApplications() {
-		return this.applications;
-	}
-
-	public void setApplications(Set<Application> applications) {
-		this.applications = applications;
-	}
 }

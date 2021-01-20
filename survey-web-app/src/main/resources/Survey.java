@@ -1,5 +1,5 @@
 // default package
-// Generated 28 dic 2020 19:50:55 by Hibernate Tools 5.1.10.Final
+// Generated 19 ene 2021 3:30:01 by Hibernate Tools 5.1.10.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -10,9 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,6 +24,7 @@ import javax.persistence.UniqueConstraint;
 public class Survey implements java.io.Serializable {
 
 	private Integer surveyId;
+	private boolean allowMultipleApplications;
 	private boolean surveyActive;
 	private String surveyDescription;
 	private String surveyExitMessage;
@@ -35,7 +33,6 @@ public class Survey implements java.io.Serializable {
 	private Date surveyPublicationDate;
 	private Date surveyStartDate;
 	private String surveyWelcomeMessage;
-	private byte allowMultipleApplications;
 	private Set<Category> categories = new HashSet<Category>(0);
 	private Set<Surveyparticipant> surveyparticipants = new HashSet<Surveyparticipant>(0);
 	private Set<Segmentation> segmentations = new HashSet<Segmentation>(0);
@@ -43,16 +40,17 @@ public class Survey implements java.io.Serializable {
 	public Survey() {
 	}
 
-	public Survey(boolean surveyActive, String surveyName, byte allowMultipleApplications) {
+	public Survey(boolean allowMultipleApplications, boolean surveyActive, String surveyName) {
+		this.allowMultipleApplications = allowMultipleApplications;
 		this.surveyActive = surveyActive;
 		this.surveyName = surveyName;
-		this.allowMultipleApplications = allowMultipleApplications;
 	}
 
-	public Survey(boolean surveyActive, String surveyDescription, String surveyExitMessage, Date surveyExpirationDate,
-			String surveyName, Date surveyPublicationDate, Date surveyStartDate, String surveyWelcomeMessage,
-			byte allowMultipleApplications, Set<Category> categories, Set<Surveyparticipant> surveyparticipants,
-			Set<Segmentation> segmentations) {
+	public Survey(boolean allowMultipleApplications, boolean surveyActive, String surveyDescription,
+			String surveyExitMessage, Date surveyExpirationDate, String surveyName, Date surveyPublicationDate,
+			Date surveyStartDate, String surveyWelcomeMessage, Set<Category> categories,
+			Set<Surveyparticipant> surveyparticipants, Set<Segmentation> segmentations) {
+		this.allowMultipleApplications = allowMultipleApplications;
 		this.surveyActive = surveyActive;
 		this.surveyDescription = surveyDescription;
 		this.surveyExitMessage = surveyExitMessage;
@@ -61,7 +59,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyPublicationDate = surveyPublicationDate;
 		this.surveyStartDate = surveyStartDate;
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
-		this.allowMultipleApplications = allowMultipleApplications;
 		this.categories = categories;
 		this.surveyparticipants = surveyparticipants;
 		this.segmentations = segmentations;
@@ -77,6 +74,15 @@ public class Survey implements java.io.Serializable {
 
 	public void setSurveyId(Integer surveyId) {
 		this.surveyId = surveyId;
+	}
+
+	@Column(name = "AllowMultipleApplications", nullable = false)
+	public boolean isAllowMultipleApplications() {
+		return this.allowMultipleApplications;
+	}
+
+	public void setAllowMultipleApplications(boolean allowMultipleApplications) {
+		this.allowMultipleApplications = allowMultipleApplications;
 	}
 
 	@Column(name = "SurveyActive", nullable = false)
@@ -154,15 +160,6 @@ public class Survey implements java.io.Serializable {
 		this.surveyWelcomeMessage = surveyWelcomeMessage;
 	}
 
-	@Column(name = "AllowMultipleApplications", nullable = false)
-	public byte getAllowMultipleApplications() {
-		return this.allowMultipleApplications;
-	}
-
-	public void setAllowMultipleApplications(byte allowMultipleApplications) {
-		this.allowMultipleApplications = allowMultipleApplications;
-	}
-
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
 	public Set<Category> getCategories() {
 		return this.categories;
@@ -181,10 +178,7 @@ public class Survey implements java.io.Serializable {
 		this.surveyparticipants = surveyparticipants;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "survey_has_segmentation", catalog = "encuesta", joinColumns = {
-			@JoinColumn(name = "survey_SurveyID", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "segmentation_segmentationID", nullable = false, updatable = false) })
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "survey")
 	public Set<Segmentation> getSegmentations() {
 		return this.segmentations;
 	}

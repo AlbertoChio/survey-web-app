@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 
 import com.example.demo.Usuario.dominio.Usuario;
+import com.example.demo.Usuario.dominio.dtos.UsuarioNewSurveyDto;
 
 public interface IUsuarioDao extends CrudRepository<Usuario, Integer> {
 	Optional<Usuario> findByUsername(String nombreUsuario);

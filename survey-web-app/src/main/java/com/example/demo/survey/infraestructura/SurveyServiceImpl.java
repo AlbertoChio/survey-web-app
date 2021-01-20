@@ -1,8 +1,11 @@
 package com.example.demo.survey.infraestructura;
 
+import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +13,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Usuario.infraestructura.IUsuarioService;
+import com.example.demo.category.domino.Category;
+import com.example.demo.survey.dominio.Segmentation;
 import com.example.demo.survey.dominio.Survey;
 import com.example.demo.survey.dominio.dtos.SurveyChartsDto;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
+import com.example.demo.survey.dominio.dtos.SurveyNewAnswerDto;
+import com.example.demo.survey.dominio.dtos.SurveyNewSurveyDto;
+import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
 import com.example.demo.surveyparticipant.infraestructura.IApplicationDao;
 import com.example.demo.surveyparticipantanswer.dominio.dtos.ApplicationHasQuestionChartsDto;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 
 public class SurveyServiceImpl implements ISurveyService {
+
+	private final static Logger LOGGER = Logger.getLogger(SurveyServiceImpl.class.getName());
 
 	@Autowired
 	private ISurveyDao surveyDao;
@@ -56,9 +70,7 @@ public class SurveyServiceImpl implements ISurveyService {
 		if (surveyDao.existsBySurveyparticipantsUsuarioUsernameAndSurveyName(username, surveyname)) {
 			Survey survey = surveyDao.findBySurveyName(surveyname);
 			if (!survey.surveyExpired() && survey.getSurveyActive()) {
-
 				return (survey.getAllowMultipleApplications() | !userHasApplied(username, surveyname));
-
 			}
 		}
 
@@ -85,6 +97,28 @@ public class SurveyServiceImpl implements ISurveyService {
 
 		SurveyChartsDto surveyChartsDto = new SurveyChartsDto(survey);
 		return surveyChartsDto;
+	}
+
+	@Override
+	public SurveyNewAnswerDto SurveyToSurveyNewAnswerDto(Survey survey) {
+		SurveyNewAnswerDto surveyNewAnswerDto = new SurveyNewAnswerDto(survey);
+		return surveyNewAnswerDto;
+	}
+
+	@Override
+	public Survey NewSurveyRecord(SurveyNewSurveyDto surveyNewSurveyDto) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			LOGGER.info(mapper.writeValueAsString(surveyNewSurveyDto));
+			Survey survey = new Survey(surveyNewSurveyDto);
+			LOGGER.info(mapper.writeValueAsString(survey));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Survey survey = new Survey(surveyNewSurveyDto);
+		return surveyDao.save(survey);
 	}
 
 }
