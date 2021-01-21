@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -34,12 +35,14 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import com.example.demo.Usuario.dominio.Usuario;
 import com.example.demo.Usuario.infraestructura.IUsuarioService;
+import com.example.demo.category.domino.Category;
 import com.example.demo.rol.dominio.RolNombre;
 import com.example.demo.security.dominio.dtos.NuevoUsuario;
 import com.example.demo.survey.dominio.Survey;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
 import com.example.demo.survey.dominio.dtos.SurveyNewSurveyDto;
 import com.example.demo.survey.infraestructura.ISurveyService;
+import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
 import com.example.demo.util.dominio.Mensaje;
 import com.example.demo.util.dominio.Views;
 
@@ -56,6 +59,8 @@ public class SurveyRestController {
 
 	@Autowired
 	private ISurveyService surveyService;
+	
+	
 	private final Logger log = LoggerFactory.getLogger(SurveyRestController.class);
 
 	@GetMapping("/encuestass")
@@ -95,6 +100,7 @@ public class SurveyRestController {
 			BindingResult result) {
 		if (result.hasErrors())
 			return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
+		
 		Survey survey = surveyService.NewSurveyRecord(surveydto);
 		MappingJacksonValue jacksonValue = new MappingJacksonValue(survey);
 		return new ResponseEntity(jacksonValue, HttpStatus.OK);

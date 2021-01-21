@@ -12,7 +12,7 @@ public interface IUsuarioService {
 
 	public List<Usuario> findAll();
 
-	public Optional<Usuario> findByUsername(String nombreUsuario);
+	public Usuario findByUsername(String nombreUsuario);
 
 	public void save(Usuario usuario);
 

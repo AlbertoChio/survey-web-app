@@ -5,6 +5,8 @@ package com.example.demo.Usuario.dominio;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +23,8 @@ import javax.persistence.UniqueConstraint;
 
 import com.example.demo.category.domino.Category;
 import com.example.demo.rol.dominio.Rol;
+import com.example.demo.survey.dominio.Survey;
+import com.example.demo.survey.dominio.dtos.SurveyListDto;
 import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
 import com.example.demo.surveyparticipant.dominio.dtos.SurveyparticipantNewSurveyDto;
 import com.example.demo.util.dominio.Views;
@@ -240,6 +244,16 @@ public class Usuario implements java.io.Serializable {
 
 	public void setRols(Set<Rol> rols) {
 		this.rols = rols;
+	}
+
+	public void setSurveyparticipants(Survey survey) {
+		this.surveyparticipants.add(new Surveyparticipant(survey));
+		
+	}
+
+	public void setSurveyparticipants(int surveyId) {
+		this.surveyparticipants.add(new Surveyparticipant(surveyId));
+		
 	}
 
 }

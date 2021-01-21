@@ -72,6 +72,14 @@ public class Surveyparticipant implements java.io.Serializable {
 		this.usuario= new Usuario(temp);
 	}
 
+	public Surveyparticipant(int surveyId) {
+		this.survey= new Survey(surveyId);
+	}
+
+	public Surveyparticipant(Usuario usuario2) {
+		this.usuario=usuario2;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "SurveyparticipantID", unique = true, nullable = false)

@@ -36,6 +36,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.example.demo.Usuario.dominio.Usuario;
 import com.example.demo.category.domino.Category;
 import com.example.demo.category.domino.dtos.CategoryNewSurveyDto;
 import com.example.demo.question.dominio.Question;
@@ -164,7 +165,17 @@ public class Survey implements java.io.Serializable {
 				  surveyNewSurveyDto.getSegmentations().stream().map(temp -> {
 				  Segmentation p = new Segmentation(temp); return p;
 				  }).collect(Collectors.toSet());
+		if(surveyNewSurveyDto.getSurveyparticipants() != null) {
+			this.surveyparticipants =surveyNewSurveyDto.getSurveyparticipants().stream().map(temp -> {
+				  Surveyparticipant p = new Surveyparticipant(temp); return p;
+				  }).collect(Collectors.toSet());
+		}
 
+	}
+
+	public Survey(int surveyId) {
+		this.surveyId=surveyId;
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getSurveyId() {
@@ -292,5 +303,6 @@ public class Survey implements java.io.Serializable {
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar.getTime();
 	}
+
 
 }

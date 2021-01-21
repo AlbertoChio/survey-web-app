@@ -35,4 +35,6 @@ public interface ISurveyService {
 
 	public Survey NewSurveyRecord(SurveyNewSurveyDto surveyNewSurveyDto);
 
+	public Survey save(Survey survey);
+
 }

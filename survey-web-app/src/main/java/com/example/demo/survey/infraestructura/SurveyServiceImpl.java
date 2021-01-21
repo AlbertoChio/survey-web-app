@@ -11,7 +11,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.Usuario.dominio.Usuario;
+import com.example.demo.Usuario.infraestructura.IUsuarioDao;
 import com.example.demo.Usuario.infraestructura.IUsuarioService;
 import com.example.demo.category.domino.Category;
 import com.example.demo.survey.dominio.Segmentation;
@@ -21,6 +24,7 @@ import com.example.demo.survey.dominio.dtos.SurveyListDto;
 import com.example.demo.survey.dominio.dtos.SurveyNewAnswerDto;
 import com.example.demo.survey.dominio.dtos.SurveyNewSurveyDto;
 import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
+import com.example.demo.surveyparticipant.dominio.dtos.SurveyparticipantNewSurveyDto;
 import com.example.demo.surveyparticipant.infraestructura.IApplicationDao;
 import com.example.demo.surveyparticipantanswer.dominio.dtos.ApplicationHasQuestionChartsDto;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -36,6 +40,9 @@ public class SurveyServiceImpl implements ISurveyService {
 
 	@Autowired
 	private ISurveyDao surveyDao;
+	
+	@Autowired
+	private IUsuarioDao usuarioDao;
 
 	@Autowired
 	private IApplicationDao applicationDao;
@@ -64,8 +71,9 @@ public class SurveyServiceImpl implements ISurveyService {
 		}).collect(Collectors.toList());
 		return surveyListDto;
 	}
-
+	
 	@Override
+	
 	public Boolean canUserStartSurvey(String username, String surveyname) {
 		if (surveyDao.existsBySurveyparticipantsUsuarioUsernameAndSurveyName(username, surveyname)) {
 			Survey survey = surveyDao.findBySurveyName(surveyname);
@@ -106,18 +114,30 @@ public class SurveyServiceImpl implements ISurveyService {
 	}
 
 	@Override
+	@Transactional
 	public Survey NewSurveyRecord(SurveyNewSurveyDto surveyNewSurveyDto) {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			LOGGER.info(mapper.writeValueAsString(surveyNewSurveyDto));
-			Survey survey = new Survey(surveyNewSurveyDto);
-			LOGGER.info(mapper.writeValueAsString(survey));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		Set<SurveyparticipantNewSurveyDto> participantsholder=surveyNewSurveyDto.getSurveyparticipants();
+		Set<SurveyparticipantNewSurveyDto> participantsvoid = null;
+		surveyNewSurveyDto.setSurveyparticipants(participantsvoid);
 		Survey survey = new Survey(surveyNewSurveyDto);
+		survey=surveyDao.save(survey);
+		
+		Set<Surveyparticipant> surveyparticipants= participantsholder.stream().map( temp ->{
+			if(usuarioDao.existsByUsername(temp.getUsuario()))
+			{
+				Usuario usuario= usuarioDao.findByUsername(temp.getUsuario());
+				Surveyparticipant surveyparticipant= new Surveyparticipant(usuario);
+				return surveyparticipant;
+			}
+			return null;
+		}).collect(Collectors.toSet());
+		survey.setSurveyparticipants(surveyparticipants);
+	
+		return survey;
+	}
+
+	@Override
+	public Survey save(Survey survey) {
 		return surveyDao.save(survey);
 	}
 
