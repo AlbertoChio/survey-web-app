@@ -116,24 +116,25 @@ public class SurveyServiceImpl implements ISurveyService {
 	@Override
 	@Transactional
 	public Survey NewSurveyRecord(SurveyNewSurveyDto surveyNewSurveyDto) {
-		Set<SurveyparticipantNewSurveyDto> participantsholder=surveyNewSurveyDto.getSurveyparticipants();
+		if(surveyNewSurveyDto.getSurveyparticipants() != null) {
+			Set<SurveyparticipantNewSurveyDto> participantsholder=surveyNewSurveyDto.getSurveyparticipants();
+			Set<Surveyparticipant> surveyparticipants= participantsholder.stream().map( temp ->{
+				if(usuarioDao.existsByUsername(temp.getUsuario()))
+				{
+					Usuario usuario= usuarioDao.findByUsername(temp.getUsuario());
+					Surveyparticipant surveyparticipant= new Surveyparticipant(usuario);
+					return surveyparticipant;
+				}
+				return null;
+			}).collect(Collectors.toSet());
+			Survey survey = new Survey(surveyNewSurveyDto);
+			survey.setSurveyparticipants(surveyparticipants);
+			return surveyDao.save(survey);
+		}
 		Set<SurveyparticipantNewSurveyDto> participantsvoid = null;
 		surveyNewSurveyDto.setSurveyparticipants(participantsvoid);
 		Survey survey = new Survey(surveyNewSurveyDto);
-		survey=surveyDao.save(survey);
-		
-		Set<Surveyparticipant> surveyparticipants= participantsholder.stream().map( temp ->{
-			if(usuarioDao.existsByUsername(temp.getUsuario()))
-			{
-				Usuario usuario= usuarioDao.findByUsername(temp.getUsuario());
-				Surveyparticipant surveyparticipant= new Surveyparticipant(usuario);
-				return surveyparticipant;
-			}
-			return null;
-		}).collect(Collectors.toSet());
-		survey.setSurveyparticipants(surveyparticipants);
-	
-		return survey;
+		return surveyDao.save(survey);
 	}
 
 	@Override

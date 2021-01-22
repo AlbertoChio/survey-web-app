@@ -91,11 +91,17 @@ public class SurveyParticipantRestController {
 
 	@PostMapping("/create")
 	public ResponseEntity<?> saveapplication(@RequestBody Application application) {
-		Surveyparticipant surveyparticipant = surveyParticipantService
-				.findByUsuarioUsernameAndSurveySurveyName("useruser", "encuesta1");
-		application.setSurveyparticipant(surveyparticipant);
-		MappingJacksonValue jacksonValue = new MappingJacksonValue(
-				applicationService.save(application).getIdapplication());
-		return new ResponseEntity<Object>((jacksonValue), HttpStatus.OK);
+		if (applicationService.canUserAnswerSurvey("useradmin", "encuesta1")) {
+
+			Surveyparticipant surveyparticipant = surveyParticipantService
+					.findByUsuarioUsernameAndSurveySurveyName("useradmin", "encuesta1");
+			application.setSurveyparticipant(surveyparticipant);
+			MappingJacksonValue jacksonValue = new MappingJacksonValue(
+					applicationService.save(application).getIdapplication());
+			return new ResponseEntity<Object>((jacksonValue), HttpStatus.OK);
+		}
+		return new ResponseEntity(
+				new Mensaje("Encuesta expirada, inactiva o ya has excedido el número de aplicaciones permitidas"),
+				HttpStatus.BAD_REQUEST);
 	}
 }

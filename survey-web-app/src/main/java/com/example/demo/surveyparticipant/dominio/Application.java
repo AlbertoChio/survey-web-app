@@ -46,6 +46,7 @@ public class Application implements java.io.Serializable {
 	private Set<ApplicationHasQuestion> applicationHasQuestions = new HashSet<ApplicationHasQuestion>(0);
 
 	public Application() {
+		super();
 	}
 
 	public Application(int idapplication, Surveyparticipant surveyparticipant) {
@@ -72,7 +73,6 @@ public class Application implements java.io.Serializable {
 		this.idapplication = idapplication;
 	}
 
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "surveyparticipant_SurveyparticipantID", nullable = false)
 	public Surveyparticipant getSurveyparticipant() {

@@ -76,8 +76,8 @@ public class Surveyparticipant implements java.io.Serializable {
 		this.survey= new Survey(surveyId);
 	}
 
-	public Surveyparticipant(Usuario usuario2) {
-		this.usuario=usuario2;
+	public Surveyparticipant(Usuario usuario) {
+		this.usuario=usuario;
 	}
 
 	@Id

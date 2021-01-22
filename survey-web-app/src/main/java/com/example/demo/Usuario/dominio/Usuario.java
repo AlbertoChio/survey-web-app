@@ -246,14 +246,4 @@ public class Usuario implements java.io.Serializable {
 		this.rols = rols;
 	}
 
-	public void setSurveyparticipants(Survey survey) {
-		this.surveyparticipants.add(new Surveyparticipant(survey));
-		
-	}
-
-	public void setSurveyparticipants(int surveyId) {
-		this.surveyparticipants.add(new Surveyparticipant(surveyId));
-		
-	}
-
 }

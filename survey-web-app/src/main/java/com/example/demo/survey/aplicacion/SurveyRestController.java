@@ -103,7 +103,7 @@ public class SurveyRestController {
 		
 		Survey survey = surveyService.NewSurveyRecord(surveydto);
 		MappingJacksonValue jacksonValue = new MappingJacksonValue(survey);
-		return new ResponseEntity(jacksonValue, HttpStatus.OK);
+		return new ResponseEntity(new Mensaje("encuesta guardada correctamente"), HttpStatus.OK);
 	}
 
 }
