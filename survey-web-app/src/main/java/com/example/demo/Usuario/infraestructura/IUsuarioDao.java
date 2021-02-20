@@ -16,7 +16,7 @@ public interface IUsuarioDao extends CrudRepository<Usuario, Integer> {
 	boolean existsByEmail(String email);
 
 	List<Usuario> findAll();
-	
+
 	Usuario findByUsername(String username);
 
 }

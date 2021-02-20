@@ -72,6 +72,17 @@ public class SurveyParticipantRestController {
 		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
 	}
 
+	@GetMapping("/all-applications")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<MappingJacksonValue> listallsurveyparticiants(Authentication authentication) {
+		List<Surveyparticipant> surveyparticipants = surveyParticipantService.findAll();
+		List<ParticipantSurveyListDto> participantSurveyListDto = surveyParticipantService
+				.listParticipantSurveyListDto(surveyparticipants);
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(participantSurveyListDto);
+
+		return new ResponseEntity<>(jacksonValue, HttpStatus.OK);
+	}
+
 	@PostMapping("/create/{surveyname}")
 	public ResponseEntity<?> saveapplication(@PathVariable("surveyname") String surveyname,
 			@RequestBody Application application, Authentication authentication) {

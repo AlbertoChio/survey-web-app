@@ -67,6 +67,8 @@ public class Category implements java.io.Serializable {
 	}
 
 	public Category(CategoryNewSurveyDto temp) {
+		super();
+		this.categoryId=temp.getCategoryId();
 		this.categoryName = temp.getCategoryName();
 		this.questions = temp.getQuestions().stream().map(tempp -> {
 			Question p = new Question(tempp);

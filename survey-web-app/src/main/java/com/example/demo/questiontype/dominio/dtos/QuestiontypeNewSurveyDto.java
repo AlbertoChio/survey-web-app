@@ -6,6 +6,7 @@ public class QuestiontypeNewSurveyDto {
 
 	public QuestiontypeNewSurveyDto() {
 		super();
+		this.questionTypeCode="rank";
 	}
 
 	public QuestiontypeNewSurveyDto(String questionTypeCode) {

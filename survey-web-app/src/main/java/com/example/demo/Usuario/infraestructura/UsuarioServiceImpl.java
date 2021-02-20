@@ -1,8 +1,12 @@
 package com.example.demo.Usuario.infraestructura;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Usuario.dominio.Usuario;
 import com.example.demo.Usuario.dominio.dtos.UsuarioNewSurveyDto;
+import com.example.demo.security.dominio.dtos.NuevosUsuarios;
+import com.example.demo.survey.dominio.Segmentation;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
 
 @Service
@@ -49,6 +55,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
 			return p;
 		}).collect(Collectors.toList());
 		return usuarioNewSurveyDto;
+	}
+	
+	public boolean existsByUsernames(NuevosUsuarios nuevoUsuarios) {
+		
+		Set<Boolean > unExitentsUsuarios= new HashSet<Boolean>(0);
+		unExitentsUsuarios= nuevoUsuarios.getUsuarios().stream().map(temp->{
+			return usuarioDao.existsByUsername(temp.getNombreUsuario());
+		}).collect(Collectors.toSet());
+		
+		return unExitentsUsuarios.contains(true);
 	}
 
 }

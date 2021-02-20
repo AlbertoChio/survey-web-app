@@ -67,11 +67,14 @@ public class Segmentation implements java.io.Serializable {
 	}
 
 	public Segmentation(SegmentationNewSurveyDto temp) {
+		super();
+		this.segmentationId=temp.getSegmentationId();
 		this.segmentationName = temp.getSegmentationName();
-		this.segmentationitems=temp.getSegmentationitems().stream().map(tempp -> {
+		this.segmentationitems = temp.getSegmentationitems().stream().map(tempp -> {
 			Segmentationitem p = new Segmentationitem(tempp);
 			return p;
 		}).collect(Collectors.toSet());
+		
 	}
 
 	@Id

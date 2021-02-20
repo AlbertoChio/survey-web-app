@@ -21,12 +21,15 @@ import com.example.demo.rol.infraestructura.RolService;
 import com.example.demo.security.dominio.dtos.JwtDto;
 import com.example.demo.security.dominio.dtos.LoginUsuario;
 import com.example.demo.security.dominio.dtos.NuevoUsuario;
+import com.example.demo.security.dominio.dtos.NuevosUsuarios;
 import com.example.demo.security.infraestructura.jwt.JwtProvider;
+import com.example.demo.survey.dominio.Segmentation;
 import com.example.demo.util.dominio.Mensaje;
 
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -76,5 +79,29 @@ public class AuthController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
 		return new ResponseEntity(jwtDto, HttpStatus.OK);
+	}
+	
+	@PostMapping("/nuevo")
+	public ResponseEntity<?> nuevos(@Valid @RequestBody NuevosUsuarios nuevoUsuarios, BindingResult bindingResult) {
+		if (bindingResult.hasErrors())
+			return new ResponseEntity(new Mensaje("campos mal puestos o email inválido"), HttpStatus.BAD_REQUEST);
+		if (usuarioService.existsByUsernames(nuevoUsuarios))
+			return new ResponseEntity(new Mensaje("Uno o mas usuarios ya existe"), HttpStatus.BAD_REQUEST);
+		Set<Usuario> usuarios=new HashSet<Usuario>(0);
+		usuarios = nuevoUsuarios.getUsuarios().stream().map(temp ->{
+			
+			return new Usuario(temp);
+		}).collect(Collectors.toSet());
+				
+				
+				new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(),
+				nuevoUsuario.getEmail(), passwordEncoder.encode(nuevoUsuario.getPassword()));
+		Set<Rol> roles = new HashSet<>();
+		roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER.toString()).get());
+		if (nuevoUsuario.getRoles().contains("admin"))
+			roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN.toString()).get());
+		usuario.setRols(roles);
+		usuarioService.save(usuario);
+		return new ResponseEntity(new Mensaje("usuario guardado"), HttpStatus.CREATED);
 	}
 }

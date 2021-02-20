@@ -37,4 +37,8 @@ public interface ISurveyService {
 
 	public Survey save(Survey survey);
 
+	public SurveyNewSurveyDto NewSurveyRequest(String surveyname);
+
+	public Survey UpdateSurveyRecord(SurveyNewSurveyDto surveyNewSurveyDto);
+
 }

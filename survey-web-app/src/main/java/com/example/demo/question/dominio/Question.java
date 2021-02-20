@@ -85,6 +85,8 @@ public class Question implements java.io.Serializable {
 	}
 
 	public Question(QuestionNewSurveyDto tempp) {
+		super();
+		this.questionId= tempp.getQuestionId();
 		this.questionName = tempp.getQuestionName();
 		this.questiontype = new Questiontype("rank");
 		// TODO Auto-generated constructor stub
@@ -158,7 +160,7 @@ public class Question implements java.io.Serializable {
 		this.questionText = questionText;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question" , cascade = CascadeType.ALL)
 	public Set<Choice> getChoices() {
 		return this.choices;
 	}

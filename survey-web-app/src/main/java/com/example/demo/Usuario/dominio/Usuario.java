@@ -21,8 +21,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.example.demo.category.domino.Category;
 import com.example.demo.rol.dominio.Rol;
+import com.example.demo.rol.dominio.RolNombre;
+import com.example.demo.security.dominio.dtos.NuevoUsuario;
 import com.example.demo.survey.dominio.Survey;
 import com.example.demo.survey.dominio.dtos.SurveyListDto;
 import com.example.demo.surveyparticipant.dominio.Surveyparticipant;
@@ -43,6 +48,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "usuario", catalog = "encuesta")
 
 public class Usuario implements java.io.Serializable {
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	private int usuarioId;
 
@@ -107,11 +115,27 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	public Usuario(SurveyparticipantNewSurveyDto temp) {
+		super();
+		this.usuarioId= temp.getUsuarioId();
 		this.username = temp.getUsuario();
 	}
 
 	public Usuario(String usuario) {
-		this.username= usuario;
+		this.username = usuario;
+	}
+
+	public Usuario(Surveyparticipant usuario) {
+		super();
+		this.usuarioId= usuario.getUsuario().getUsuarioId();
+		this.username = usuario.getUsuario().getUsername();
+	}
+
+	public Usuario(NuevoUsuario temp) {
+		super();
+		this.username = temp.getNombreUsuario();
+		this.password = passwordEncoder.encode(temp.getPassword());
+		this.rols.add(new Rol(2,"ROLE_USER"));
+		// TODO Auto-generated constructor stub
 	}
 
 	@Id
@@ -244,6 +268,14 @@ public class Usuario implements java.io.Serializable {
 
 	public void setRols(Set<Rol> rols) {
 		this.rols = rols;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [usuarioId=" + usuarioId + ", username=" + username + ", birthDate=" + birthDate
+				+ ", firstName=" + firstName + ", gender=" + gender + ", initials=" + initials + ", lastName="
+				+ lastName + ", middleName=" + middleName + ", title=" + title + ", password=" + password + ", enabled="
+				+ enabled + ", email=" + email + ", rols=" + rols + "]";
 	}
 
 }

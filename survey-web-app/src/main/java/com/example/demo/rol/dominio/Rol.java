@@ -53,6 +53,7 @@ public class Rol implements java.io.Serializable {
 		this.usuarios = usuarios;
 	}
 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "RolID", unique = true, nullable = false)

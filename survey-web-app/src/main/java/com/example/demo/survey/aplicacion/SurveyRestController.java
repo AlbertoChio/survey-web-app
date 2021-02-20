@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -59,11 +60,10 @@ public class SurveyRestController {
 
 	@Autowired
 	private ISurveyService surveyService;
-	
-	
+
 	private final Logger log = LoggerFactory.getLogger(SurveyRestController.class);
 
-	@GetMapping("/encuestass")
+	@GetMapping("/encuestas")
 	@ResponseStatus(HttpStatus.OK)
 	public List<SurveyListDto> index() {
 		List<Survey> surveys = surveyService.findAll();
@@ -100,10 +100,29 @@ public class SurveyRestController {
 			BindingResult result) {
 		if (result.hasErrors())
 			return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
-		
 		Survey survey = surveyService.NewSurveyRecord(surveydto);
 		MappingJacksonValue jacksonValue = new MappingJacksonValue(survey);
 		return new ResponseEntity(new Mensaje("encuesta guardada correctamente"), HttpStatus.OK);
+	}
+	
+	@PutMapping("/encuesta/encuesta-creation/{surveyname}")
+	public ResponseEntity<?> surveyadminsubmitSurveyNewSurveyDto(@Valid @RequestBody SurveyNewSurveyDto surveydto,
+			BindingResult result, @PathVariable("surveyname") String surveyname) {
+		if (result.hasErrors())
+			return new ResponseEntity(new Mensaje("campos mal puestos"), HttpStatus.BAD_REQUEST);
+		
+		Survey survey = surveyService.UpdateSurveyRecord(surveydto);
+		SurveyNewSurveyDto surveyNewSurveyDto = surveyService.NewSurveyRequest(survey.getSurveyName());
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(surveyNewSurveyDto);
+		return new ResponseEntity(jacksonValue, HttpStatus.OK);
+	}
+
+	
+	@GetMapping("/encuesta/encuesta-creation/{surveyname}")
+	public ResponseEntity<?> surveyadminrequestSurveyNewSurveyDto(@PathVariable("surveyname") String surveyname) {
+		SurveyNewSurveyDto surveyNewSurveyDto = surveyService.NewSurveyRequest(surveyname);
+		MappingJacksonValue jacksonValue = new MappingJacksonValue(surveyNewSurveyDto);
+		return new ResponseEntity(jacksonValue, HttpStatus.OK);
 	}
 
 }

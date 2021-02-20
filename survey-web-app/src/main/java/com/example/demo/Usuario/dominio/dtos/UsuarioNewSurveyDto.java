@@ -3,25 +3,35 @@ package com.example.demo.Usuario.dominio.dtos;
 import com.example.demo.Usuario.dominio.Usuario;
 
 public class UsuarioNewSurveyDto {
-
-	private String username;
+	
+	private int usuarioId;
+	
+	private String usuario;
 
 	public UsuarioNewSurveyDto(String username) {
 		super();
-		this.username = username;
 	}
 
 	public UsuarioNewSurveyDto(Usuario usuario) {
 		super();
-		this.username = usuario.getUsername();
+		this.usuarioId=usuario.getUsuarioId();
+		this.usuario = usuario.getUsername();
 	}
 
-	public String getUsername() {
-		return username;
+	public int getUsuarioId() {
+		return usuarioId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsuarioId(int usuarioId) {
+		this.usuarioId = usuarioId;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 
 }

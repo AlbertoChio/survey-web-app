@@ -7,6 +7,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.util.Calendar;
+import java.util.Collection;
 
 // default package
 // Generated 15 sep 2020 12:52:23 by Hibernate Tools 5.1.10.Final
@@ -75,7 +76,7 @@ public class Survey implements java.io.Serializable {
 	@Column(name = "SurveyExpirationDate", length = 26)
 	private Date surveyExpirationDate;
 
-	@Column(name = "SurveyName", length = 40, unique = true, nullable = false)
+	@Column(name = "SurveyName", length = 40, unique = true, nullable = false, updatable=true)
 	private String surveyName;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -95,16 +96,16 @@ public class Survey implements java.io.Serializable {
 	@Column(name = "SurveyActive", nullable = false)
 	private boolean surveyActive;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "survey_SurveyID", nullable = false)
 	private Set<Category> categories = new HashSet<Category>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "survey_SurveyID", nullable=false)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "survey_SurveyID", nullable = false)
 	private Set<Surveyparticipant> surveyparticipants = new HashSet<Surveyparticipant>(0);
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "survey_SurveyID", nullable=false)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "survey_SurveyID", nullable = false)
 	private Set<Segmentation> segmentations = new HashSet<Segmentation>(0);
 
 	public Survey() {
@@ -150,6 +151,7 @@ public class Survey implements java.io.Serializable {
 	}
 
 	public Survey(SurveyNewSurveyDto surveyNewSurveyDto) {
+		super();
 		this.surveyActive = true;
 		this.allowMultipleApplications = true;
 		this.surveyName = surveyNewSurveyDto.getSurveyName();
@@ -161,20 +163,21 @@ public class Survey implements java.io.Serializable {
 			Category p = new Category(temp);
 			return p;
 		}).collect(Collectors.toSet());
-		this.segmentations =
-				  surveyNewSurveyDto.getSegmentations().stream().map(temp -> {
-				  Segmentation p = new Segmentation(temp); return p;
-				  }).collect(Collectors.toSet());
-		if(surveyNewSurveyDto.getSurveyparticipants() != null) {
-			this.surveyparticipants =surveyNewSurveyDto.getSurveyparticipants().stream().map(temp -> {
-				  Surveyparticipant p = new Surveyparticipant(temp); return p;
-				  }).collect(Collectors.toSet());
+		this.segmentations = surveyNewSurveyDto.getSegmentations().stream().map(temp -> {
+			Segmentation p = new Segmentation(temp);
+			return p;
+		}).collect(Collectors.toSet());
+		if (surveyNewSurveyDto.getSurveyparticipants() != null) {
+			this.surveyparticipants = surveyNewSurveyDto.getSurveyparticipants().stream().map(temp -> {
+				Surveyparticipant p = new Surveyparticipant(temp);
+				return p;
+			}).collect(Collectors.toSet());
 		}
 
 	}
 
 	public Survey(int surveyId) {
-		this.surveyId=surveyId;
+		this.surveyId = surveyId;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -271,7 +274,9 @@ public class Survey implements java.io.Serializable {
 	}
 
 	public void setSurveyparticipants(Set<Surveyparticipant> surveyparticipants) {
-		this.surveyparticipants = surveyparticipants;
+		this.surveyparticipants.clear();
+		this.surveyparticipants.addAll(surveyparticipants);
+		
 	}
 
 	public Set<Segmentation> getSegmentations() {
@@ -280,6 +285,61 @@ public class Survey implements java.io.Serializable {
 
 	public void setSegmentations(Set<Segmentation> segmentations) {
 		this.segmentations = segmentations;
+	}
+	
+
+
+	/**
+	 * @param e
+	 * @return
+	 * @see java.util.Set#add(java.lang.Object)
+	 */
+	public boolean add(Surveyparticipant e) {
+		return surveyparticipants.add(e);
+	}
+
+	/**
+	 * @param o
+	 * @return
+	 * @see java.util.Set#remove(java.lang.Object)
+	 */
+
+	/**
+	 * @param c
+	 * @return
+	 * @see java.util.Set#addAll(java.util.Collection)
+	 */
+	public boolean addAll(Collection<? extends Surveyparticipant> c) {
+		return surveyparticipants.addAll(c);
+	}
+
+	/**
+	 * @param c
+	 * @return
+	 * @see java.util.Set#removeAll(java.util.Collection)
+	 */
+
+	/**
+	 * 
+	 * @see java.util.Set#clear()
+	 */
+	public void clear() {
+		//surveyparticipants.clear();
+		segmentations.clear();
+		categories.clear();
+
+	}
+	
+
+	
+	@Override
+	public String toString() {
+		return "Survey [surveyId=" + surveyId + ", surveyDescription=" + surveyDescription + ", surveyExitMessage="
+				+ surveyExitMessage + ", surveyExpirationDate=" + surveyExpirationDate + ", surveyName=" + surveyName
+				+ ", surveyPublicationDate=" + surveyPublicationDate + ", surveyStartDate=" + surveyStartDate
+				+ ", surveyWelcomeMessage=" + surveyWelcomeMessage + ", allowMultipleApplications="
+				+ allowMultipleApplications + ", surveyActive=" + surveyActive + ", categories=" + categories
+				+ ", surveyparticipants=" + surveyparticipants + ", segmentations=" + segmentations + "]";
 	}
 
 	public Boolean surveyExpired() {
@@ -303,6 +363,5 @@ public class Survey implements java.io.Serializable {
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar.getTime();
 	}
-
 
 }

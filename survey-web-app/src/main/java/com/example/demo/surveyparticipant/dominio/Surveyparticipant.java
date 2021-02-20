@@ -69,15 +69,26 @@ public class Surveyparticipant implements java.io.Serializable {
 	}
 
 	public Surveyparticipant(SurveyparticipantNewSurveyDto temp) {
-		this.usuario= new Usuario(temp);
+		super();
+		this.usuario = new Usuario(temp);
 	}
 
 	public Surveyparticipant(int surveyId) {
-		this.survey= new Survey(surveyId);
+		this.survey = new Survey(surveyId);
 	}
 
 	public Surveyparticipant(Usuario usuario) {
-		this.usuario=usuario;
+		this.usuario = usuario;
+	}
+
+	public Surveyparticipant(Usuario usuario, Survey survey) {
+		this.usuario = usuario;
+		this.survey=survey;
+	}
+
+	public Surveyparticipant(Surveyparticipant temp) {
+		super();
+		this.usuario = new Usuario(temp);
 	}
 
 	@Id
@@ -102,7 +113,7 @@ public class Surveyparticipant implements java.io.Serializable {
 	}
 
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@ManyToOne(fetch = FetchType.EAGER, optional=true, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
 	@JoinColumn(name = "Usuario_UsuarioID", nullable = true)
 	public Usuario getUsuario() {
 		return this.usuario;
@@ -119,6 +130,12 @@ public class Surveyparticipant implements java.io.Serializable {
 
 	public void setApplications(Set<Application> applications) {
 		this.applications = applications;
+	}
+
+	@Override
+	public String toString() {
+		return "Surveyparticipant [surveyparticipantId=" + surveyparticipantId + ", usuario="
+				+ usuario + ", applications=" + applications + "]";
 	}
 
 }

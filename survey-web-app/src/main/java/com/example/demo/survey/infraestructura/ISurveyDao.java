@@ -20,5 +20,7 @@ public interface ISurveyDao extends CrudRepository<Survey, Integer> {
 	boolean existsBySurveyName(String nombre);
 
 	boolean existsBySurveyparticipantsUsuarioUsernameAndSurveyName(String username, String survey);
+	
+	Survey findById(int id);
 
 }

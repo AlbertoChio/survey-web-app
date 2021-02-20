@@ -52,6 +52,8 @@ public class Segmentationitem implements java.io.Serializable {
 	}
 
 	public Segmentationitem(SegmentationitemNewSurveyDto tempp) {
+		super();
+		this.segmentationitemId = tempp.getSegmentationitemId();
 		this.segmentationitemName = tempp.getSegmentationitemName();
 	}
 
