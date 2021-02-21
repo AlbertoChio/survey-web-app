@@ -130,12 +130,11 @@ public class Usuario implements java.io.Serializable {
 		this.username = usuario.getUsuario().getUsername();
 	}
 
-	public Usuario(NuevoUsuario temp) {
-		super();
-		this.username = temp.getNombreUsuario();
-		this.password = passwordEncoder.encode(temp.getPassword());
+	public Usuario(String nombre, String nombreUsuario, String encode) {
+		this.firstName = nombre;
+		this.username = nombreUsuario;
+		this.password = encode;
 		this.rols.add(new Rol(2,"ROLE_USER"));
-		// TODO Auto-generated constructor stub
 	}
 
 	@Id

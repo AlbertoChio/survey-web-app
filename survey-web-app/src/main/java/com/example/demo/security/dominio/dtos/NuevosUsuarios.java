@@ -8,6 +8,10 @@ import java.util.Set;
 public class NuevosUsuarios {
 	
 	private Set<NuevoUsuario> usuarios = new HashSet<NuevoUsuario>(0);
+	
+	public NuevosUsuarios() {
+		super();
+	}
 
 	public NuevosUsuarios(Set<NuevoUsuario> usuarios) {
 		super();

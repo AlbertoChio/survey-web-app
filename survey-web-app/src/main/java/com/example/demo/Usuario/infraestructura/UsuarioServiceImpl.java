@@ -41,6 +41,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	public void save(Usuario usuario) {
 		usuarioDao.save(usuario);
 	}
+	
+	public void saveAll(Set<Usuario> usuario) {
+		usuarioDao.saveAll(usuario);
+	}
 
 	@Override
 	public Usuario findByUsername(String nombreUsuario) {

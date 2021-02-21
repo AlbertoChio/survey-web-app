@@ -81,7 +81,7 @@ public class AuthController {
 		return new ResponseEntity(jwtDto, HttpStatus.OK);
 	}
 	
-	@PostMapping("/nuevo")
+	@PostMapping("/nuevos")
 	public ResponseEntity<?> nuevos(@Valid @RequestBody NuevosUsuarios nuevoUsuarios, BindingResult bindingResult) {
 		if (bindingResult.hasErrors())
 			return new ResponseEntity(new Mensaje("campos mal puestos o email inválido"), HttpStatus.BAD_REQUEST);
@@ -89,19 +89,13 @@ public class AuthController {
 			return new ResponseEntity(new Mensaje("Uno o mas usuarios ya existe"), HttpStatus.BAD_REQUEST);
 		Set<Usuario> usuarios=new HashSet<Usuario>(0);
 		usuarios = nuevoUsuarios.getUsuarios().stream().map(temp ->{
-			
-			return new Usuario(temp);
+			Usuario usuario = new Usuario(temp.getNombre(), temp.getNombreUsuario(),
+					 passwordEncoder.encode(temp.getPassword()));
+			Set<Rol> roles = new HashSet<>();
+			roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER.toString()).get());
+			return usuario;
 		}).collect(Collectors.toSet());
-				
-				
-				new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(),
-				nuevoUsuario.getEmail(), passwordEncoder.encode(nuevoUsuario.getPassword()));
-		Set<Rol> roles = new HashSet<>();
-		roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER.toString()).get());
-		if (nuevoUsuario.getRoles().contains("admin"))
-			roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN.toString()).get());
-		usuario.setRols(roles);
-		usuarioService.save(usuario);
-		return new ResponseEntity(new Mensaje("usuario guardado"), HttpStatus.CREATED);
+		usuarioService.saveAll(usuarios);
+		return new ResponseEntity(new Mensaje("usuarios guardados"), HttpStatus.CREATED);
 	}
 }

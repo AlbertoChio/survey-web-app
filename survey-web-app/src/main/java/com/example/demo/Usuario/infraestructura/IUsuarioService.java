@@ -2,6 +2,7 @@ package com.example.demo.Usuario.infraestructura;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,4 +18,5 @@ public interface IUsuarioService {
 	public void save(Usuario usuario);
 
 	public List<UsuarioNewSurveyDto> findAllUsuario();
+
 }
